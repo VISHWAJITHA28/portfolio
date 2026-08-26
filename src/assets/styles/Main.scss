@@ -3,6 +3,8 @@
 }
 
 .about-section {
+    position: relative;
+    overflow: hidden;
     display: flex;
     gap: 30px;
     justify-content: flex-start;
@@ -10,11 +12,9 @@
     width: 100%;
     padding: 0px 15%;
     min-height: 700px;
-    background-image: url("../images/bg-dark.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
+    /* The ribbon is drawn live by HeroWave rather than loaded as an image,
+       so there is no background-image here any more. */
+    background-color: #0d1116;
 }
 
 .about-section .content {

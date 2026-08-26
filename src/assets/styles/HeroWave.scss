@@ -1,0 +1,11 @@
+/* The animated ribbon replaces the template's static bg-dark.png. It sits
+   behind the hero content but above the section's own background. */
+.hero-wave {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+}
