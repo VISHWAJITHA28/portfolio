@@ -1,0 +1,44 @@
+.about-container {
+    padding: 5% 10%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.about-container .about-body {
+    max-width: 800px;
+    margin-top: 10px;
+}
+
+.about-container .about-body p {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    margin-bottom: 22px;
+}
+
+/* The opening line carries the greeting, so it gets a little more weight than
+   the paragraphs under it without becoming another heading. */
+.about-container .about-lead {
+    font-size: 1.35rem !important;
+    line-height: 1.6 !important;
+    font-weight: 600;
+}
+
+.about-container .about-highlight {
+    font-weight: 700;
+}
+
+@media screen and (max-width: 900px) {
+    .about-container {
+        padding: 8% 8%;
+    }
+
+    .about-container .about-body p {
+        font-size: 1rem;
+        line-height: 1.75;
+    }
+
+    .about-container .about-lead {
+        font-size: 1.2rem !important;
+    }
+}
