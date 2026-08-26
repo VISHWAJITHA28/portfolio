@@ -16,7 +16,7 @@ function Project() {
             <div className="project">
                 <a href="https://www.ve-lyra.com/" target="_blank" rel="noreferrer"><img src={mock07} className="zoom" alt="thumbnail" width="100%"/></a>
                 <a href="https://www.ve-lyra.com/" target="_blank" rel="noreferrer"><h2>Ve Lyra Healthcare Platform</h2></a>
-                <p>My current work: a multi-tenant hospital operating system running in production. Four role-based portals for patients, doctors, administrators and pharmacy teams, all reading from one shared FHIR R4 record. I built the schema-per-tenant isolation that keeps hospitals separate at the database level, per-module JWT authentication, an agentic clinical research assistant that answers only from PubMed, FDA, NIH and WHO with citations, and a DICOM diagnostic tool that cut clinician scan-review time by 85%. Also ran the security review and closed an unauthenticated endpoint that was returning patient records. Source is private.</p>
+                <p>My current work: a multi-tenant hospital operating system running in production. Four role-based portals for patients, doctors, administrators and pharmacy teams, all reading from one shared FHIR R4 record. I built the schema-per-tenant isolation that keeps hospitals separate at the database level, per-module JWT authentication, an agentic clinical research assistant that answers only from PubMed, FDA, NIH and WHO with citations, and a DICOM diagnostic tool that cut clinician scan-review time by 85%. Source is private.</p>
             </div>
             <div className="project">
                 <a href="https://github.com/VISHWAJITHA28/Drug_discovery" target="_blank" rel="noreferrer"><img src={mock01} className="zoom" alt="thumbnail" width="100%"/></a>
