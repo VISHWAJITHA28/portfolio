@@ -46,3 +46,77 @@ form {
   width: 100% !important;
   margin-bottom: 15px !important;
 }
+/* ── contact links (replaces the form) ─────────────────────────────────── */
+
+.contact-links {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 40px;
+    width: 100%;
+}
+
+.contact-link {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+    padding: 22px 26px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 8px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.contact-link:hover {
+    transform: translateX(6px);
+    border-color: rgba(255, 255, 255, 0.45);
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.contact-link-icon {
+    display: flex;
+    align-items: center;
+}
+
+.contact-link-text {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-align: left;
+}
+
+.contact-link-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    opacity: 0.6;
+}
+
+.contact-link-value {
+    font-size: 1.15rem;
+    font-weight: 600;
+    word-break: break-word;
+}
+
+/* The light theme needs its own borders: the white-on-white above would
+   otherwise leave the cards invisible. */
+.light-mode .contact-link {
+    border-color: rgba(0, 0, 0, 0.16);
+}
+
+.light-mode .contact-link:hover {
+    border-color: rgba(0, 0, 0, 0.42);
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+@media screen and (max-width: 600px) {
+    .contact-link {
+        padding: 18px 18px;
+        gap: 16px;
+    }
+
+    .contact-link-value {
+        font-size: 1rem;
+    }
+}
