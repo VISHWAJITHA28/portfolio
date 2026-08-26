@@ -2,49 +2,55 @@ import React, { useEffect, useRef } from "react";
 import '../assets/styles/Background.scss';
 
 /**
- * Animated constellation background.
+ * Moving wave background.
  *
- * Nodes drift, and any two within range are joined by a line whose opacity
- * falls off with distance. The pointer pulls nearby nodes toward it, so the
- * field reacts rather than just looping.
+ * Five stacked sine waves, each a filled band with its own wavelength, speed
+ * and phase. Because no two share a period, the crests drift in and out of
+ * alignment and the surface never visibly repeats. Matching periods would
+ * make the whole thing pulse in lockstep, which reads as a loop rather than
+ * as water.
  *
- * Performance notes, because a full-screen canvas is easy to get wrong:
- *   - node count scales with viewport area and is capped, so a 4K monitor
- *     does not end up running an O(n^2) join over 400 nodes
- *   - the loop stops entirely when the tab is hidden
- *   - honours prefers-reduced-motion by drawing one static frame
- *   - backing store is sized to devicePixelRatio so lines stay crisp
+ * Performance:
+ *   - one canvas, one rAF loop, no DOM work per frame
+ *   - the loop stops when the tab is hidden
+ *   - a single static frame under prefers-reduced-motion
+ *   - the backing store is sized to devicePixelRatio so edges stay clean
  */
 
-type Node = { x: number; y: number; vx: number; vy: number; r: number };
+type Wave = {
+  amp: number;      // crest height in px
+  len: number;      // wavelength in px
+  speed: number;    // horizontal travel per frame
+  y: number;        // resting height, as a fraction of canvas height
+  phase: number;
+  fill: string;
+};
 
-const LINK_DIST = 132;      // px within which two nodes are joined
-const POINTER_DIST = 170;   // px within which the pointer influences a node
+const WAVES: Wave[] = [
+  { amp: 34, len: 520, speed: 0.28, y: 0.58, phase: 0.0, fill: "rgba(109, 74, 202, 0.30)" },
+  { amp: 26, len: 380, speed: 0.42, y: 0.64, phase: 1.7, fill: "rgba(80, 0, 202, 0.26)" },
+  { amp: 42, len: 700, speed: 0.19, y: 0.70, phase: 3.1, fill: "rgba(139, 92, 246, 0.22)" },
+  { amp: 22, len: 300, speed: 0.55, y: 0.76, phase: 4.6, fill: "rgba(45, 178, 194, 0.16)" },
+  { amp: 30, len: 460, speed: 0.33, y: 0.83, phase: 2.2, fill: "rgba(190, 70, 180, 0.14)" },
+];
 
 function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  // The hero keeps its own backdrop and stays as it was. The constellation
-  // only arrives once the first screen has scrolled away, so the landing view
-  // is quiet and the effect reads as something the page reveals rather than
-  // something competing with the name.
+  // The hero keeps its own backdrop. The waves only arrive once the first
+  // screen has scrolled away, so the landing view stays quiet.
   useEffect(() => {
     const wrap = wrapRef.current;
     if (!wrap) return;
 
     let ticking = false;
-
     const apply = () => {
       const vh = window.innerHeight;
-      const y = window.scrollY;
-      const start = vh * 0.45;   // begins fading in here
-      const end = vh * 0.95;     // fully present by here
-      const t = Math.min(1, Math.max(0, (y - start) / (end - start)));
+      const t = Math.min(1, Math.max(0, (window.scrollY - vh * 0.45) / (vh * 0.5)));
       wrap.style.opacity = String(t);
       ticking = false;
     };
-
     const onScroll = () => {
       if (ticking) return;
       ticking = true;
@@ -68,105 +74,59 @@ function Background() {
 
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-    let nodes: Node[] = [];
     let raf = 0;
     let running = true;
-    const pointer = { x: -9999, y: -9999 };
+    let t = 0;
+    let w = 0;
+    let h = 0;
 
     const setup = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-
+      w = window.innerWidth;
+      h = window.innerHeight;
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       canvas.style.width = `${w}px`;
       canvas.style.height = `${h}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      // One node per ~13k px^2, clamped. Density stays constant across screen
-      // sizes without the join loop exploding on a large display.
-      const count = Math.min(110, Math.max(34, Math.round((w * h) / 13000)));
-
-      nodes = Array.from({ length: count }, () => ({
-        x: Math.random() * w,
-        y: Math.random() * h,
-        vx: (Math.random() - 0.5) * 0.34,
-        vy: (Math.random() - 0.5) * 0.34,
-        r: Math.random() * 1.7 + 0.9,
-      }));
     };
 
     const frame = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
       ctx.clearRect(0, 0, w, h);
 
-      for (const n of nodes) {
-        if (!reduced) {
-          n.x += n.vx;
-          n.y += n.vy;
-
-          // Pull toward the pointer, gently, falling off with distance.
-          const dx = pointer.x - n.x;
-          const dy = pointer.y - n.y;
-          const d = Math.hypot(dx, dy);
-          if (d < POINTER_DIST && d > 0.5) {
-            const pull = (1 - d / POINTER_DIST) * 0.035;
-            n.x += dx * pull;
-            n.y += dy * pull;
-          }
-
-          // Wrap rather than bounce: bouncing makes the edges read as walls.
-          if (n.x < -20) n.x = w + 20;
-          if (n.x > w + 20) n.x = -20;
-          if (n.y < -20) n.y = h + 20;
-          if (n.y > h + 20) n.y = -20;
-        }
+      for (const wave of WAVES) {
+        const base = h * wave.y;
 
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(167, 139, 250, 0.72)";
+        ctx.moveTo(0, h);
+
+        // Step in 6px increments rather than per-pixel. At this amplitude the
+        // difference is invisible and it cuts the work by a factor of six.
+        for (let x = 0; x <= w; x += 6) {
+          const y =
+            base +
+            Math.sin((x / wave.len) * Math.PI * 2 + wave.phase + t * wave.speed * 0.05) * wave.amp +
+            // A second, slower term at a different wavelength keeps the crest
+            // line from looking like a textbook sine.
+            Math.sin((x / (wave.len * 0.43)) * Math.PI * 2 + t * wave.speed * 0.03) * (wave.amp * 0.32);
+          ctx.lineTo(x, y);
+        }
+
+        ctx.lineTo(w, h);
+        ctx.closePath();
+        ctx.fillStyle = wave.fill;
         ctx.fill();
       }
 
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const a = nodes[i];
-          const b = nodes[j];
-          const dx = a.x - b.x;
-          const dy = a.y - b.y;
-          const d2 = dx * dx + dy * dy;
-          if (d2 > LINK_DIST * LINK_DIST) continue;
-
-          // Fade the line out as the pair separates, so links appear and
-          // vanish smoothly instead of popping at the threshold.
-          const alpha = (1 - Math.sqrt(d2) / LINK_DIST) * 0.42;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(139, 122, 246, ${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.stroke();
-        }
-      }
-
+      if (!reduced) t += 1;
       if (running && !reduced) raf = requestAnimationFrame(frame);
     };
 
-    const onPointer = (e: PointerEvent) => {
-      pointer.x = e.clientX;
-      pointer.y = e.clientY;
-    };
-    const onLeave = () => {
-      pointer.x = -9999;
-      pointer.y = -9999;
-    };
     const onResize = () => {
       setup();
+      frame();
     };
     const onVisibility = () => {
-      // A background animating in a tab nobody is looking at is pure waste.
       running = !document.hidden;
       if (running && !reduced) raf = requestAnimationFrame(frame);
       else cancelAnimationFrame(raf);
@@ -176,16 +136,12 @@ function Background() {
     frame();
 
     window.addEventListener("resize", onResize);
-    window.addEventListener("pointermove", onPointer, { passive: true });
-    window.addEventListener("pointerleave", onLeave);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
       running = false;
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
-      window.removeEventListener("pointermove", onPointer);
-      window.removeEventListener("pointerleave", onLeave);
       document.removeEventListener("visibilitychange", onVisibility);
     };
   }, []);
@@ -195,7 +151,6 @@ function Background() {
       <canvas ref={canvasRef} className="bg-canvas" />
       <span className="bg-orb bg-orb--violet" />
       <span className="bg-orb bg-orb--indigo" />
-      <span className="bg-orb bg-orb--teal" />
     </div>
   );
 }

@@ -51,24 +51,9 @@
 
 .about-section .image-wrapper {
     z-index: 2;
-
     img {
-        width: 230px;
-        height: 230px;
-        /* cover + a slightly raised focal point, so the circle frames the
-           face instead of centring on the middle of the image */
-        object-fit: cover;
-        object-position: center 32%;
+        width: 150px;
         border-radius: 50%;
-        border: 3px solid rgba(255, 255, 255, 0.14);
-        box-shadow: 0 18px 50px -18px rgba(0, 0, 0, 0.75);
-    }
-}
-
-@media screen and (max-width: 900px) {
-    .about-section .image-wrapper img {
-        width: 180px;
-        height: 180px;
     }
 }
 
