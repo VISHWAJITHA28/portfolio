@@ -3,7 +3,6 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
 import byru from '../assets/images/byru.jpg';
-import HeroWave from './HeroWave';
 import '../assets/styles/Main.scss';
 
 function Main() {
@@ -11,7 +10,7 @@ function Main() {
   return (
     <div className="container">
       <div className="about-section">
-        <HeroWave/>
+        <div className="hero-ribbon" aria-hidden="true" />
         <div className="image-wrapper">
           <img src={byru} alt="Byru Vishwajitha" />
         </div>

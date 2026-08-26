@@ -12,9 +12,34 @@
     width: 100%;
     padding: 0px 15%;
     min-height: 700px;
-    /* The ribbon is drawn live by HeroWave rather than loaded as an image,
-       so there is no background-image here any more. */
     background-color: #0d1116;
+}
+
+/* The ribbon is the template's own artwork, unchanged. It sits on its own
+   layer purely so it can be animated: the section itself must stay still,
+   or the content on top of it would drift too. */
+.about-section .hero-ribbon {
+    position: absolute;
+    inset: -4%;
+    z-index: 0;
+    pointer-events: none;
+    background-image: url("../images/bg-dark.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    /* Deliberately small. The inset above gives the layer 4% of slack on each
+       side, so it can drift without ever exposing an edge. */
+    animation: ribbon-drift 26s ease-in-out infinite alternate;
+    will-change: transform;
+}
+
+@keyframes ribbon-drift {
+    from { transform: translate3d(0, 0, 0) scale(1); }
+    to   { transform: translate3d(-1.6%, 1.1%, 0) scale(1.045); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .about-section .hero-ribbon { animation: none; }
 }
 
 .about-section .content {
