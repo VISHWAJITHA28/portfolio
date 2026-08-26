@@ -23,6 +23,42 @@ const POINTER_DIST = 170;   // px within which the pointer influences a node
 
 function Background() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const wrapRef = useRef<HTMLDivElement>(null);
+
+  // The hero keeps its own backdrop and stays as it was. The constellation
+  // only arrives once the first screen has scrolled away, so the landing view
+  // is quiet and the effect reads as something the page reveals rather than
+  // something competing with the name.
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    if (!wrap) return;
+
+    let ticking = false;
+
+    const apply = () => {
+      const vh = window.innerHeight;
+      const y = window.scrollY;
+      const start = vh * 0.45;   // begins fading in here
+      const end = vh * 0.95;     // fully present by here
+      const t = Math.min(1, Math.max(0, (y - start) / (end - start)));
+      wrap.style.opacity = String(t);
+      ticking = false;
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(apply);
+    };
+
+    apply();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -155,7 +191,7 @@ function Background() {
   }, []);
 
   return (
-    <div className="bg-ambient" aria-hidden="true">
+    <div className="bg-ambient" aria-hidden="true" ref={wrapRef}>
       <canvas ref={canvasRef} className="bg-canvas" />
       <span className="bg-orb bg-orb--violet" />
       <span className="bg-orb bg-orb--indigo" />

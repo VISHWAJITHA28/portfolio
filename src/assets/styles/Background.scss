@@ -14,6 +14,11 @@
     z-index: 0;
     overflow: hidden;
     pointer-events: none;
+
+    /* Starts hidden. Background.tsx raises this as the hero scrolls away, so
+       the first screen stays exactly as the template had it. */
+    opacity: 0;
+    transition: opacity 260ms linear;
 }
 
 .bg-canvas {
