@@ -57,6 +57,14 @@
     animation: bg-drift-b 31s ease-in-out infinite alternate;
 }
 
+.bg-orb--teal {
+    width: 32vw;
+    height: 32vw;
+    top: 42%;
+    left: 34%;
+    background: radial-gradient(circle, rgba(45, 178, 194, 0.20), transparent 68%);
+    animation: bg-drift-a 37s ease-in-out infinite alternate-reverse;
+}
 
 @keyframes bg-drift-a {
     from { transform: translate3d(0, 0, 0) scale(1); }
