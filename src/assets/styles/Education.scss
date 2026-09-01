@@ -1,0 +1,53 @@
+/* Lifted from the old Expertise section, which this now outlives. */
+
+.skills-container {
+    padding: 5% 10%;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+
+    svg { color: white; }
+}
+
+.skills-container .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 50px;
+}
+
+.skills-container .skills-grid .skill {
+    align-items: center;
+    text-align: left;
+}
+
+.chip {
+    color: rgb(39, 40, 34) !important;
+    background-color: white !important;
+    font-size: 0.8rem !important;
+    height: 25px !important;
+
+    span { font-family: 'Courier Prime', monospace; color: rgb(39, 40, 34); }
+    svg { height: 15px !important; }
+}
+
+.flex-chips { line-height: 2; }
+
+.chip-title {
+    font-weight: 700;
+    margin-right: 8px;
+}
+
+.light-mode {
+    .skills-container svg { color: var(--cin-black); }
+
+    .chip {
+        color: white !important;
+        background-color: var(--cin-black) !important;
+        span { color: white; }
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .skills-container .skills-grid { grid-template-columns: 1fr; grid-gap: 34px; }
+    .skills-container { padding: 8% 8%; }
+}

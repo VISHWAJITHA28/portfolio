@@ -1,36 +1,46 @@
 import React from "react";
-import GitHubIcon from '@mui/icons-material/GitHub';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import EmailIcon from '@mui/icons-material/Email';
-import byru from '../assets/images/byru.jpg';
-import '../assets/styles/Main.scss';
+import '../assets/styles/Hero.scss';
 
+/**
+ * The hero.
+ *
+ * The whole first screen is one headline. No portrait, no card, no gradient —
+ * the reference this follows earns its impact by giving type the entire frame
+ * and letting the space around it carry the weight. Anything else placed here
+ * competes with the only line a visitor actually needs to read.
+ */
 function Main() {
-
   return (
-    <div className="container">
-      <div className="about-section">
-        <div className="hero-ribbon" aria-hidden="true" />
-        <div className="image-wrapper">
-          <img src={byru} alt="Byru Vishwajitha" />
+    <header className="hero" id="top">
+      <div className="mn-wrap">
+        <div className="hero-meta">
+          <p className="mn-label">Building since 2022</p>
+          <p className="mn-label hero-meta-right">Hyderabad, India</p>
         </div>
-        <div className="content">
-          <div className="social_icons">
-            <a href="https://github.com/VISHWAJITHA28" target="_blank" rel="noreferrer"><GitHubIcon/></a>
-            <a href="https://www.linkedin.com/in/vishwajithabyru28/" target="_blank" rel="noreferrer"><LinkedInIcon/></a>
-            <a href="mailto:byruvishwajitha@gmail.com"><EmailIcon/></a>
-          </div>
-          <h1>Byru Vishwajitha</h1>
-          <p>AI Engineer</p>
 
-          <div className="mobile_social_icons">
-            <a href="https://github.com/VISHWAJITHA28" target="_blank" rel="noreferrer"><GitHubIcon/></a>
-            <a href="https://www.linkedin.com/in/vishwajithabyru28/" target="_blank" rel="noreferrer"><LinkedInIcon/></a>
-            <a href="mailto:byruvishwajitha@gmail.com"><EmailIcon/></a>
+        <h1 className="mn-display hero-title">
+          AI<br />
+          Engineer
+        </h1>
+
+        <div className="hero-foot">
+          <p className="mn-lede">
+            I take things from development to deployment. Agentic systems,
+            retrieval that cites its sources, and computer vision, built to run
+            in production rather than in a notebook.
+          </p>
+
+          <div className="hero-actions">
+            <a className="mn-btn" href="#projects">
+              View work <span aria-hidden="true">&rarr;</span>
+            </a>
+            <a className="mn-btn mn-btn--ghost" href="mailto:byruvishwajitha@gmail.com">
+              Get in touch
+            </a>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }
 

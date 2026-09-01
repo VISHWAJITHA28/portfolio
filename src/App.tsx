@@ -4,12 +4,10 @@ import {
   About,
   Timeline,
   Education,
-  Expertise,
   TechMarquee,
   Project,
   Contact,
   Navigation,
-  Background,
   Footer,
 } from "./components";
 import FadeIn from './components/FadeIn';
@@ -32,16 +30,14 @@ function App() {
 
     return (
     <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
-        <Background/>
         <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
         <FadeIn transitionDuration={700}>
             <Main/>
             <About/>
-            <Expertise/>
             <TechMarquee/>
+            <Project/>
             <Timeline/>
             <Education/>
-            <Project/>
             <Contact/>
         </FadeIn>
         <Footer />

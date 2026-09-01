@@ -1,0 +1,237 @@
+/* ── sections ─────────────────────────────────────────────────────────────
+   Restyles the template's existing markup onto the minimal ground. Kept in
+   one file so every rule that overrides the template lives in one place
+   rather than scattered through the component sheets.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* ── nav ── */
+.navigation-bar {
+    background: rgba(255, 255, 255, 0.86) !important;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+    position: relative;
+    z-index: 10;
+
+    button, span, p, a {
+        color: var(--ink) !important;
+        font-family: var(--body) !important;
+        font-size: 0.88rem !important;
+        font-weight: 600 !important;
+        letter-spacing: 0.01em;
+        text-transform: none !important;
+    }
+
+    svg { color: var(--ink) !important; }
+}
+
+/* ── about ── */
+#about .about-container {
+    padding: var(--section-y) var(--gutter);
+    max-width: var(--page);
+    margin: 0 auto;
+}
+/* The lede IS the statement. A heading above it only repeats the nav item. */
+#about h1 { display: none; }
+#about .about-body { max-width: 46ch; }
+#about .about-lead {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.6rem, 3.4vw, 2.6rem) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-bottom: 26px;
+}
+#about .about-body p { font-size: 1.05rem; line-height: 1.62; color: var(--muted); }
+#about .about-highlight { color: var(--ink); font-weight: 700; }
+
+/* ── the stack ── */
+.marquee-section { padding-block: var(--section-y); }
+.marquee-head {
+    padding-inline: var(--gutter);
+    max-width: var(--page);
+    margin: 0 auto 44px;
+}
+.marquee-head h2 {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.9rem, 4.6vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+}
+.marquee-eyebrow { font-family: var(--body); color: var(--muted); opacity: 1; }
+.marquee-eyebrow::before { content: "/ "; }
+
+.marquee-row {
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+}
+.marquee-pill {
+    border: 1px solid var(--line) !important;
+    background: transparent !important;
+    color: var(--ink) !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+/* Inverting rather than tinting. With no accent colour available,
+   black-on-white flipping to white-on-black is the only emphasis there is —
+   and it is a stronger one than any tint would have been. */
+.marquee-pill:hover {
+    background: var(--ink) !important;
+    border-color: var(--ink) !important;
+    color: var(--bg) !important;
+}
+
+/* ── projects ── */
+#projects {
+    padding-block: var(--section-y);
+    max-width: var(--page);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+}
+#projects h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.9rem, 4.6vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin-bottom: 44px;
+}
+.projects-grid { grid-gap: clamp(30px, 4vw, 58px) !important; }
+.project img { border-radius: 12px; border: 1px solid var(--line); }
+.project h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    text-transform: none;
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin-top: 18px;
+}
+.project p { color: var(--muted); font-size: 0.97rem; line-height: 1.6; }
+.project .zoom { transition: transform 600ms cubic-bezier(.2,.8,.2,1); }
+.project:hover .zoom { transform: scale(1.02); }
+
+/* ── timeline ── */
+#history { padding-block: var(--section-y); }
+#history .items-container {
+    max-width: var(--page);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+}
+#history h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.9rem, 4.6vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    text-align: left;
+    margin-bottom: 40px;
+}
+.vertical-timeline::before { background: var(--line) !important; }
+.vertical-timeline-element-content {
+    background: var(--bg) !important;
+    color: var(--ink) !important;
+    box-shadow: none !important;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+}
+.vertical-timeline-element-content-arrow { border-right-color: var(--line) !important; }
+.vertical-timeline-element-icon {
+    background: var(--ink) !important;
+    box-shadow: 0 0 0 4px var(--bg) !important;
+}
+.vertical-timeline-element-icon svg { color: var(--bg) !important; }
+.vertical-timeline-element-title {
+    font-family: var(--display);
+    font-weight: 700;
+    color: var(--ink);
+}
+.vertical-timeline-element-subtitle { color: var(--muted) !important; font-weight: 600; }
+.vertical-timeline-element-date { color: var(--faint) !important; font-weight: 600; }
+.vertical-timeline-element-content p { color: var(--muted) !important; }
+
+/* ── education ── */
+#education .skills-container {
+    padding: var(--section-y) var(--gutter);
+    max-width: var(--page);
+    margin: 0 auto;
+}
+#education h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(1.9rem, 4.6vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: -0.03em;
+    margin-bottom: 40px;
+}
+/* A 1px gap over a dark parent draws the dividers, so no border rules needed
+   on the cells themselves. */
+#education .skills-grid {
+    grid-gap: 1px !important;
+    background: var(--line);
+    border: 1px solid var(--line);
+}
+#education .skill { background: var(--bg); padding: 38px 34px; }
+#education .skill svg { color: var(--ink) !important; font-size: 1.6rem !important; }
+#education .skill h3 { font-family: var(--display); font-weight: 700; margin-top: 20px; }
+#education .skill p { color: var(--muted); margin-top: 8px; }
+
+/* ── contact ── */
+#contact { padding-block: var(--section-y); }
+#contact .items-container {
+    max-width: var(--page);
+    margin: 0 auto;
+    padding-inline: var(--gutter);
+}
+#contact .contact_wrapper { align-items: flex-start; text-align: left; }
+#contact h1 {
+    font-family: var(--display);
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: clamp(2.4rem, 7vw, 6rem);
+    line-height: 0.94;
+    letter-spacing: -0.035em;
+}
+#contact .contact_wrapper > p { color: var(--muted); max-width: 52ch; margin-top: 18px; }
+
+/* Contact rows become ruled lines rather than boxes — closer to a contents
+   page than a set of cards. */
+.contact-links { gap: 0 !important; border-bottom: 1px solid var(--line); }
+.contact-link,
+.contact-link:hover,
+.contact-link:focus-visible {
+    border: 0 !important;
+    border-top: 1px solid var(--line) !important;
+    border-radius: 0 !important;
+    color: var(--ink) !important;
+    padding: 30px 0 !important;
+}
+.contact-link:hover { background: transparent !important; padding-left: 14px !important; }
+.contact-link svg { color: var(--ink) !important; }
+.contact-link-label { color: var(--faint) !important; }
+.contact-link-value {
+    color: var(--ink) !important;
+    font-family: var(--display);
+    font-weight: 700;
+}
+.contact-link:hover .contact-link-value,
+.contact-link:hover svg { color: var(--ink) !important; }
+
+/* ── footer ── */
+footer {
+    border-top: 1px solid var(--line);
+    padding: 34px var(--gutter) !important;
+    max-width: var(--page);
+    margin: 0 auto;
+    background: var(--bg) !important;
+
+    p, a, svg { color: var(--muted) !important; }
+    a:hover, a:hover svg { color: var(--ink) !important; }
+}

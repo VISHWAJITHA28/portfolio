@@ -14,7 +14,7 @@
   }
 
   button:hover {
-    background-color: #5000ca;
+    background-color: var(--cin-accent);
     color: white;
   }
 
@@ -50,7 +50,7 @@ form {
 /* ── contact links (replaces the form) ─────────────────────────────────── */
 
 /* Every colour here is explicit rather than inherited. The template sets a
-   global `a:hover { color: #5000ca }`, and that dark purple on the #0d1116
+   global `a:hover`, whose original purple measured 1.98:1 on the page ground
    background is effectively invisible. Anything relying on inheritance
    disappears the moment the pointer touches it. */
 
@@ -78,7 +78,7 @@ form {
 
 .contact-link:hover {
     transform: translateX(6px);
-    border-color: #8b5cf6;
+    border-color: var(--cin-accent);
     background-color: rgba(255, 255, 255, 0.06);
 }
 
@@ -116,7 +116,7 @@ form {
 
 .contact-link:hover .contact-link-value,
 .contact-link:hover svg {
-    color: #a78bfa;
+    color: var(--cin-accent-soft);
 }
 
 /* Light theme: the whites above would vanish on #f8f9fa. */
@@ -125,20 +125,20 @@ form {
     .contact-link:hover,
     .contact-link:focus-visible {
         border-color: rgba(0, 0, 0, 0.18);
-        color: #0d1116;
+        color: var(--cin-black);
     }
 
     .contact-link:hover {
-        border-color: #5000ca;
+        border-color: var(--cin-accent);
         background-color: rgba(0, 0, 0, 0.04);
     }
 
-    .contact-link svg { color: #0d1116; }
+    .contact-link svg { color: var(--cin-black); }
     .contact-link-label { color: #5a6472; }
-    .contact-link-value { color: #0d1116; }
+    .contact-link-value { color: var(--cin-black); }
 
     .contact-link:hover .contact-link-value,
-    .contact-link:hover svg { color: #5000ca; }
+    .contact-link:hover svg { color: var(--cin-accent); }
 }
 
 @media screen and (max-width: 600px) {

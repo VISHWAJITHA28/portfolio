@@ -1,0 +1,59 @@
+/* ── hero ─────────────────────────────────────────────────────────────────
+   One screen, one headline. The layout is a three-part stack: a thin meta row
+   at the top, the headline filling the middle, and the lede plus actions
+   pinned to the bottom. That arrangement is what makes the headline feel
+   framed rather than merely large.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hero {
+    min-height: 92vh;
+    display: flex;
+    align-items: stretch;
+    padding-block: clamp(96px, 14vh, 170px) clamp(40px, 7vh, 80px);
+}
+
+.hero .mn-wrap {
+    display: flex;
+    flex-direction: column;
+    /* Pushes the meta row up and the foot down, so the headline sits in the
+       optical centre without being vertically centred (which always reads as
+       slightly too high). */
+    justify-content: space-between;
+    gap: clamp(40px, 8vh, 90px);
+}
+
+.hero-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--line);
+}
+
+.hero-title {
+    /* Optical alignment: heavy uppercase carries visible side bearing, so a
+       flush-left headline looks indented next to the rule above it. */
+    margin-left: -0.045em;
+}
+
+.hero-foot {
+    display: grid;
+    gap: clamp(28px, 4vw, 60px);
+    align-items: end;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 900px) {
+    .hero-foot { grid-template-columns: 1.25fr auto; }
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+@media screen and (max-width: 600px) {
+    .hero { min-height: 88vh; }
+    .hero-meta-right { display: none; }
+}
