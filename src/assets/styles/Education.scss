@@ -9,9 +9,12 @@
     svg { color: white; }
 }
 
+/* One column. There is one degree, and a two-column grid left an empty
+   second cell that Sections.scss then painted with the grid's own background
+   colour — which is the grey block that used to sit beside it. */
 .skills-container .skills-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
     grid-gap: 50px;
 }
 
@@ -48,7 +51,7 @@
 }
 
 @media screen and (max-width: 900px) {
-    .skills-container .skills-grid { grid-template-columns: 1fr; grid-gap: 34px; }
+    .skills-container .skills-grid { grid-gap: 34px; }
     .skills-container { padding: 8% 8%; }
 }
 

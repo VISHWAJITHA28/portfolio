@@ -110,10 +110,12 @@
     font-family: "Anton", "Archivo", Impact, sans-serif;
     font-weight: 400;
     text-transform: uppercase;
-    /* Much larger than the Inter version needed: Anton's caps advance about
-       0.47em against Inter 800's ~0.72em, so the same line at the same size
-       would sit two thirds of the way across the frame. */
-    font-size: clamp(4rem, 25vw, 23rem);
+    /* Anton's caps advance about 0.47em against Inter 800's ~0.72em, so this
+       still needs to be larger in vw than the old face did — but not the 25vw
+       that ran ENGINEER the full width of the frame. At 17vw the word spans
+       roughly two thirds of it and the photograph is allowed to be the thing
+       filling the screen. */
+    font-size: clamp(2.9rem, 17vw, 15rem);
     line-height: 0.86;
     /* Anton is already tightly fitted; Inter's -0.05em would collide it. */
     letter-spacing: -0.01em;

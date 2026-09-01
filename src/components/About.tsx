@@ -1,5 +1,5 @@
 import React from "react";
-import aiCoding from '../assets/images/ai-coding.png';
+import Workspace from './Workspace';
 import '../assets/styles/About.scss';
 
 /**
@@ -19,7 +19,7 @@ import '../assets/styles/About.scss';
  *     Was a second portrait on a turning card. Two photographs of the same
  *     person one screen apart is one too many, and the card's rotation went
  *     with the hero animation it belonged to. It is a still image of the work
- *     now — see gen_about.py for why it is drawn and not a stock photo.
+ *     now — a line drawing of a workspace. See Workspace.tsx.
  */
 function About() {
   return (
@@ -38,7 +38,7 @@ function About() {
             full bleed, and repeating it here said nothing the first one had
             not. This says what the section is actually about. */}
         <div className="about-portrait">
-          <img src={aiCoding} alt="An editor with a model graph laid over it" />
+          <Workspace />
         </div>
 
         <div className="about-right">

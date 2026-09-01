@@ -1,0 +1,31 @@
+/* ── the workspace drawing ────────────────────────────────────────────────
+   Ink line art on the page's own cream. See Workspace.tsx for why it is drawn
+   as paths rather than rendered to a raster.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.wsp {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Every shape painted in the ground colour first. This is what makes the
+   drawing read as objects in front of each other instead of a wireframe: the
+   monitor hides the wall behind it, the chair hides the desk. Outline-only
+   line art always looks like a diagram for exactly this reason. */
+.wsp-fill path,
+.wsp-fill circle {
+    fill: var(--bg);
+    stroke: none;
+}
+
+/* One weight for everything, round caps and joins. Varying the stroke to
+   signal importance is what turns an illustration into a technical drawing. */
+.wsp-line path,
+.wsp-line circle {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}

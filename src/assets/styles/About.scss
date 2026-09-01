@@ -64,17 +64,9 @@
 
 .about-portrait { position: relative; }
 
-/* 4:5, matching what gen_about.py renders, so the image is never re-cropped
-   by object-fit and the graph in its lower half stays whole. */
-.about-portrait img {
-    display: block;
-    width: 100%;
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    border-radius: 16px;
-    border: 1px solid rgba(17, 17, 17, 0.08);
-    box-shadow: 0 30px 60px -34px rgba(17, 17, 17, 0.55);
-}
+/* The drawing is square and needs no frame: it is ink on the same cream as
+   the page, so a border or a shadow would put it in a box it does not want to
+   be in. */
 
 /* ── right ── */
 
