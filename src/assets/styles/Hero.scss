@@ -122,7 +122,11 @@
        roughly two thirds of it and the photograph is allowed to be the thing
        filling the screen. */
     font-size: clamp(2.9rem, 17vw, 15rem);
-    line-height: 0.86;
+    /* 0.86 had the two lines all but touching. Anton's caps fill nearly the
+       whole em box and it carries almost no descender, so a line-height that
+       looks generous on a lowercase face closes right up on this one - it
+       needs to go over 0.9 before any air appears at all. */
+    line-height: 0.95;
     /* Anton is already tightly fitted; Inter's -0.05em would collide it. */
     letter-spacing: -0.01em;
     color: var(--bg);
