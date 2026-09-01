@@ -68,45 +68,10 @@
    specificity — which is why the heading was still coming out uppercase at
    weight 800 instead of the weight it asks for. */
 
-/* ── timeline ── */
-#history { padding-block: var(--section-y); }
-#history .items-container {
-    max-width: var(--page);
-    margin: 0 auto;
-    padding-inline: var(--gutter);
-}
-#history h1 {
-    font-family: var(--display);
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.9rem, 4.6vw, 4rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    text-align: left;
-    margin-bottom: 40px;
-}
-.vertical-timeline::before { background: var(--line) !important; }
-.vertical-timeline-element-content {
-    background: var(--bg) !important;
-    color: var(--ink) !important;
-    box-shadow: none !important;
-    border: 1px solid var(--line);
-    border-radius: 14px;
-}
-.vertical-timeline-element-content-arrow { border-right-color: var(--line) !important; }
-.vertical-timeline-element-icon {
-    background: var(--ink) !important;
-    box-shadow: 0 0 0 4px var(--bg) !important;
-}
-.vertical-timeline-element-icon svg { color: var(--bg) !important; }
-.vertical-timeline-element-title {
-    font-family: var(--display);
-    font-weight: 700;
-    color: var(--ink);
-}
-.vertical-timeline-element-subtitle { color: var(--muted) !important; font-weight: 600; }
-.vertical-timeline-element-date { color: var(--faint) !important; font-weight: 600; }
-.vertical-timeline-element-content p { color: var(--muted) !important; }
+/* Career history owns its own sheet (Timeline.scss). The block that used to
+   live here styled react-vertical-timeline-component, which the section no
+   longer uses - and its #history selectors outranked the new sheet, so the
+   heading was still coming out uppercase at weight 800. */
 
 /* ── education ── */
 #education .skills-container {

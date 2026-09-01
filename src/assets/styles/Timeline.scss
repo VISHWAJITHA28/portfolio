@@ -1,38 +1,433 @@
-.vertical-timeline span {
-    color: white;
-    font-family: 'Courier Prime', monospace;
+/* ── career history: three cases on a rail ────────────────────────────────
+   The old stock timeline is gone. See Timeline.tsx for why.
+
+   Two fixed numbers hold the whole layout together, and they are the only
+   things here that must be kept in step:
+
+       --case-h    height of the briefcase object
+       --rail-y    where the rail and the ticks sit, measured from the top of
+                   the row, which is --case-h plus the gap under it
+
+   Everything else is derived.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hist {
+    --case-h: 116px;
+    --rail-y: 146px;
+
+    padding-block: var(--section-y);
 }
 
-.vertical-timeline p {
-    color: rgb(39, 40, 34);
+.hist h1 {
+    font-size: clamp(2.2rem, 5.4vw, 4.25rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 14px 0 18px;
 }
 
-.vertical-timeline-element p {
-    color: rgb(39, 40, 34);
+.hist-lede {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: var(--grey);
+    max-width: 46ch;
+    margin: 0 0 clamp(46px, 6vw, 78px);
 }
 
-.vertical-timeline-element h3 {
-    color: rgb(39, 40, 34);
+/* ── the row ── */
+
+.hist-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 3vw, 44px);
+    align-items: end;
 }
 
-.vertical-timeline-element h4 {
-    color: rgb(39, 40, 34);
+/* One line behind all three, drawn between the tick centres rather than the
+   full width — a rail that runs past the outer ticks reads as a scale with
+   missing values on it. */
+.hist-rail {
+    position: absolute;
+    top: var(--rail-y);
+    left: 16.6%;
+    right: 16.6%;
+    height: 1px;
+    background: linear-gradient(to right,
+        rgba(17, 17, 17, 0.14),
+        rgba(17, 17, 17, 0.34) 82%,
+        var(--ink));
+    z-index: 0;
 }
 
-.vertical-timeline-element span {
-    color: rgb(39, 40, 34);
+/* ── a case ── */
+
+.case {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    /* It is a button; everything a button brings with it has to go. */
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 0 0 46px;
+    font: inherit;
+    color: inherit;
+    text-align: center;
+    cursor: pointer;
 }
 
-.vertical-timeline-element .vertical-timeline-element-date {
-    color: white;
+.case:focus { outline: none; }
+.case:focus-visible .case-obj {
+    outline: 2px solid var(--ink);
+    outline-offset: 8px;
+    border-radius: 6px;
 }
 
-.svg-inline--fa {
-    color: white;
+/* ── the briefcase itself ─────────────────────────────────────────────
+   Perspective on the wrapper, the lid rotated inside it. Both on one element
+   gives a flat squash with no depth — the same trap as any CSS 3D transform.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.case-obj {
+    position: relative;
+    display: block;
+    width: 100%;
+    max-width: 168px;
+    height: var(--case-h);
+    perspective: 620px;
+    perspective-origin: 50% 30%;
 }
 
-@media screen and (max-width: 1170px) {
-    .vertical-timeline-element .vertical-timeline-element-date {
-        color: rgb(39, 40, 34);
+/* The handle, behind the lid, revealed as the lid swings back. */
+.case-handle {
+    position: absolute;
+    top: 6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 46px;
+    height: 20px;
+    border: 3px solid rgba(17, 17, 17, 0.42);
+    border-bottom: 0;
+    border-radius: 12px 12px 0 0;
+}
+
+/* The body of the case. Stays put. */
+.case-shell {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60%;
+    border-radius: 6px 6px 12px 12px;
+    background: linear-gradient(#1b1b1e, #0d0d0f);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16),
+                0 14px 26px -18px rgba(17, 17, 17, 0.7);
+}
+
+/* The lid, hinged along its own top edge. Closed it covers the case; open it
+   is thrown back over the hinge, which is what shows the handle. */
+.case-lid {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 26px;
+    height: calc(var(--case-h) - 26px);
+    border-radius: 8px;
+    background: linear-gradient(#2a2a2f, #16161a);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    display: grid;
+    place-items: center;
+    transform-origin: 50% 0;
+    transform: rotateX(0deg);
+    transition: transform 520ms cubic-bezier(0.34, 1.3, 0.5, 1),
+                filter 420ms cubic-bezier(0.44, 0, 0.56, 1);
+    /* Kept opaque from the front and dark from behind, so the thrown-back lid
+         reads as the back of a lid rather than as a hole. */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+
+/* The suitcase mark, which is what this section always used. */
+.case-lid svg {
+    font-size: 1.55rem;
+    color: rgba(255, 255, 255, 0.9);
+    transition: opacity 260ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+/* Peeking rather than fully open: past about 100 degrees the lid disappears
+   edge-on and the case looks broken instead of open. */
+.case:hover .case-lid { transform: rotateX(-26deg); }
+
+.case.is-open .case-lid {
+    transform: rotateX(-104deg);
+    filter: brightness(0.62);
+}
+.case.is-open .case-lid svg { opacity: 0; }
+
+/* Papers inside, visible once the lid is out of the way. Three stacked
+   sheets, fanned, so an open case is not an empty box. */
+.case-shell::before,
+.case-shell::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 62%;
+    width: 58%;
+    height: 34px;
+    border-radius: 3px;
+    background: #f4f1ea;
+    box-shadow: 0 2px 6px -2px rgba(17, 17, 17, 0.5);
+    transform-origin: 50% 100%;
+    transform: translateX(-50%) translateY(14px) rotate(0deg) scaleY(0.2);
+    opacity: 0;
+    transition: transform 480ms cubic-bezier(0.34, 1.24, 0.5, 1) 90ms,
+                opacity 300ms cubic-bezier(0.44, 0, 0.56, 1) 90ms;
+}
+.case-shell::after { width: 50%; background: #e6e1d6; }
+
+.case.is-open .case-shell::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-6px) rotate(-4deg) scaleY(1);
+}
+.case.is-open .case-shell::after {
+    opacity: 1;
+    transform: translateX(-46%) translateY(-2px) rotate(5deg) scaleY(1);
+}
+
+/* ── tick and label ── */
+
+/* Sits exactly on the rail. Hollow until selected, then filled — the same
+   language as a step indicator, because that is what it is. */
+.case-tick {
+    position: absolute;
+    top: var(--rail-y);
+    left: 50%;
+    width: 11px;
+    height: 11px;
+    margin: -5px 0 0 -5.5px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1.5px solid rgba(17, 17, 17, 0.34);
+    transition: background-color 300ms cubic-bezier(0.44, 0, 0.56, 1),
+                border-color 300ms cubic-bezier(0.44, 0, 0.56, 1),
+                transform 300ms cubic-bezier(0.34, 1.3, 0.5, 1);
+}
+.case.is-open .case-tick {
+    background: var(--ink);
+    border-color: var(--ink);
+    transform: scale(1.25);
+}
+
+.case-label {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    margin-top: 46px;
+}
+
+.case-co {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--grey);
+    transition: color 260ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.case.is-open .case-co,
+.case:hover .case-co { color: var(--ink); }
+
+.case-when {
+    font-size: 0.76rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--faint);
+}
+
+.case-now {
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+/* ── the panels ───────────────────────────────────────────────────────
+   All three occupy row 1 of a three-column grid, one per column, so they
+   overlap and the stage keeps a constant height however long the open one is.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hist-panels {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 8px;
+    min-height: 250px;
+}
+
+.case-panel {
+    grid-row: 1;
+    width: min(430px, 100%);
+    padding: 26px 28px 28px;
+    border-radius: 20px;
+    border: 1px solid rgba(17, 17, 17, 0.1);
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    box-shadow: 0 22px 44px -32px rgba(17, 17, 17, 0.45);
+
+    /* Unfolds downward out of the case above it, which is why the origin is
+       the top edge and not the centre. */
+    transform-origin: 50% 0;
+    transform: translateY(-10px) scaleY(0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: transform 420ms cubic-bezier(0.34, 1.2, 0.5, 1),
+                opacity 300ms cubic-bezier(0.44, 0, 0.56, 1),
+                visibility 0s linear 420ms;
+}
+
+.case-panel.is-open {
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+    z-index: 2;
+    transition-delay: 60ms, 60ms, 0s;
+}
+
+/* Each panel lines up under its own case. The outer two align to the edges of
+   the wrap instead of to their column, so a panel wider than its column can
+   never be pushed off the page. */
+.case-panel:nth-of-type(1) { grid-column: 1; justify-self: start; }
+.case-panel:nth-of-type(2) { grid-column: 2; justify-self: center; }
+.case-panel:nth-of-type(3) { grid-column: 3; justify-self: end; }
+
+/* The stage keeps its height whether or not a case is open, so that closing
+   one does not drag the rest of the page up. This sits in the reserved space
+   while it is empty — quiet enough to ignore, present enough that the gap
+   reads as deliberate. */
+.hist-empty {
+    grid-row: 1;
+    grid-column: 1 / -1;
+    justify-self: center;
+    align-self: center;
+    margin: 0;
+    font-size: 0.85rem;
+    letter-spacing: 0.01em;
+    color: var(--faint);
+    opacity: 0;
+    transition: opacity 300ms cubic-bezier(0.44, 0, 0.56, 1);
+    pointer-events: none;
+}
+.hist-panels.is-empty .hist-empty { opacity: 1; transition-delay: 140ms; }
+
+.case-panel-when {
+    margin: 0 0 10px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-variant-numeric: tabular-nums;
+    color: var(--grey);
+}
+
+.case-panel-role {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    color: var(--ink);
+}
+
+.case-panel-co {
+    margin: 5px 0 14px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--grey);
+}
+
+.case-panel-body {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #454545;
+}
+
+.case-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    list-style: none;
+    margin: 18px 0 0;
+    padding: 0;
+}
+.case-chips li {
+    font-size: 0.72rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(17, 17, 17, 0.16);
+    color: var(--ink);
+}
+
+/* ── narrow ───────────────────────────────────────────────────────────
+   The row of three survives down to phones; the panel stage does not. Below
+   this it becomes a plain accordion: the open panel in normal flow under the
+   row, the others out of the layout entirely.
+   ───────────────────────────────────────────────────────────────────────── */
+
+@media (max-width: 860px) {
+    .hist { --case-h: 82px; --rail-y: 104px; }
+
+    .case { padding-bottom: 30px; }
+    .case-obj { max-width: 104px; }
+    .case-lid { top: 18px; height: calc(var(--case-h) - 18px); }
+    .case-lid svg { font-size: 1.15rem; }
+    .case-handle { width: 34px; height: 14px; top: 4px; }
+    .case-label { margin-top: 34px; }
+    .case-co { font-size: 0.8rem; gap: 5px; }
+    .case-when { font-size: 0.68rem; }
+
+    .hist-panels {
+        display: block;
+        min-height: 0;
+        margin-top: 22px;
     }
+    /* display:none rather than visibility, or the closed panels would still
+       hold their space now that they are in normal flow. */
+    .case-panel { display: none; width: 100%; }
+    .case-panel.is-open { display: block; }
+    /* Nothing to hover on a phone, and no reserved space to explain. */
+    .hist-empty { display: none; }
+}
+
+@media (max-width: 520px) {
+    .case-co {
+        /* Two company names in a 33% column need the wrap. */
+        flex-direction: column;
+        gap: 4px;
+    }
+}
+
+/* The lid and the papers ARE the interaction, so with motion suppressed they
+   are simply drawn in their final state rather than animated into it. */
+@media (prefers-reduced-motion: reduce) {
+    .case-lid,
+    .case-shell::before,
+    .case-shell::after,
+    .case-tick,
+    .case-panel { transition: none; }
+
+    .case:hover .case-lid { transform: rotateX(0deg); }
 }

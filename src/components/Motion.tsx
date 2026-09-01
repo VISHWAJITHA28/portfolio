@@ -80,9 +80,13 @@ function Motion() {
 
       // ── 10px for everything that follows ────────────────────────────
       gsap.utils.toArray<HTMLElement>(
-        ".project, #education .skill, #contact .contact-link, " +
-        ".vertical-timeline-element, .statement-body, #about .about-body p, " +
-        "#contact .contact_wrapper > p, .marquee-eyebrow"
+        // Deliberately NOT .pdeck-card or .case-panel: both carry their own
+        // transform (pile depth, unfold) and a GSAP inline transform would
+        // overwrite it. Their containers get the reveal instead.
+        ".pdeck-index-btn, .hist-row .case, #education .skill, " +
+        "#contact .contact-link, .statement-body, .about-right p, " +
+        "#contact .contact_wrapper > p, .marquee-eyebrow, " +
+        ".hist-lede, .pdeck-lede"
       ).forEach((el, i) => {
         gsap.fromTo(el,
           { y: 10, opacity: 0 },
