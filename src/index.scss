@@ -55,7 +55,7 @@ p, a, h1, h2, h3, h4, h5, label, button {
 
 .navigation-bar-responsive {
   span, p {
-    color: var(--cin-black);
+    color: var(--ink);
     font-family: "Lato", sans-serif;
   }
 }
@@ -104,7 +104,7 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 
   p, a, h1, h2, h3, h4, h5, label, button {
-    color: var(--cin-black);
+    color: var(--ink);
   }
 
   a:hover {
@@ -113,7 +113,7 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 
   .navigation-bar svg {
-    color: var(--cin-black);
+    color: var(--ink);
   }
 
   .about-section {
@@ -121,7 +121,7 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 
   .skills-container svg {
-    color: var(--cin-black);
+    color: var(--ink);
   }
 
   .chip {
@@ -146,7 +146,7 @@ p, a, h1, h2, h3, h4, h5, label, button {
   }
 
   .flex-chips .chip-title {
-    color: var(--cin-black);
+    color: var(--ink);
   }
 }
 

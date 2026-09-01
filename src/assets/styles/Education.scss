@@ -38,11 +38,11 @@
 }
 
 .light-mode {
-    .skills-container svg { color: var(--cin-black); }
+    .skills-container svg { color: var(--ink); }
 
     .chip {
         color: white !important;
-        background-color: var(--cin-black) !important;
+        background-color: var(--ink) !important;
         span { color: white; }
     }
 }

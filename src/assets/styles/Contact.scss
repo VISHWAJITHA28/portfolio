@@ -14,7 +14,7 @@
   }
 
   button:hover {
-    background-color: var(--cin-accent);
+    background-color: var(--ink);
     color: white;
   }
 
@@ -78,7 +78,7 @@ form {
 
 .contact-link:hover {
     transform: translateX(6px);
-    border-color: var(--cin-accent);
+    border-color: var(--ink);
     background-color: rgba(255, 255, 255, 0.06);
 }
 
@@ -116,7 +116,7 @@ form {
 
 .contact-link:hover .contact-link-value,
 .contact-link:hover svg {
-    color: var(--cin-accent-soft);
+    color: var(--ink);
 }
 
 /* Light theme: the whites above would vanish on #f8f9fa. */
@@ -125,20 +125,20 @@ form {
     .contact-link:hover,
     .contact-link:focus-visible {
         border-color: rgba(0, 0, 0, 0.18);
-        color: var(--cin-black);
+        color: var(--ink);
     }
 
     .contact-link:hover {
-        border-color: var(--cin-accent);
+        border-color: var(--ink);
         background-color: rgba(0, 0, 0, 0.04);
     }
 
-    .contact-link svg { color: var(--cin-black); }
+    .contact-link svg { color: var(--ink); }
     .contact-link-label { color: #5a6472; }
-    .contact-link-value { color: var(--cin-black); }
+    .contact-link-value { color: var(--ink); }
 
     .contact-link:hover .contact-link-value,
-    .contact-link:hover svg { color: var(--cin-accent); }
+    .contact-link:hover svg { color: var(--ink); }
 }
 
 @media screen and (max-width: 600px) {
