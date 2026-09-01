@@ -24,9 +24,9 @@
     gap: clamp(38px, 5vw, 70px);
     grid-template-columns: 1fr;
     padding-top: clamp(46px, 7vh, 90px);
-    /* More room under the columns, so the watermark has space to be big
-       without colliding with the contact block. */
-    padding-bottom: clamp(150px, 24vh, 300px);
+    /* Clears the watermark, which now sits inside the frame rather than
+       hanging below it. */
+    padding-bottom: clamp(120px, 20vh, 250px);
 }
 
 @media (min-width: 900px) {
@@ -102,18 +102,19 @@
 .foot-mark {
     position: absolute;
     left: 50%;
-    /* Sits lower and runs wider than the frame, so the letters are cut top
-       and bottom rather than merely resting near the edge. */
-    bottom: clamp(-90px, -8vw, -34px);
+    /* Just clear of the bottom edge. It was at -90px, which pushed the whole
+       word below the frame and left only the tops of the letters showing. */
+    bottom: clamp(6px, 1.4vh, 24px);
     transform: translateX(-50%);
     z-index: 1;
     white-space: nowrap;
-    /* 11 letters now instead of 4, so the vw figure has to come down or the
-         word runs off the sides. Still far larger on screen than before,
-         because it no longer has to fit four wide characters. */
-    font-size: clamp(4.4rem, 15.5vw, 19rem);
+    /* VISHWAJITHA at weight 800 measures about 7.42em wide (11 caps at
+       ~0.72em advance, less the -0.05em tracking between them). At 12.2vw
+       that fills roughly 90% of the viewport, so the whole word is readable
+       with a margin either side. 15.5vw ran it off both edges. */
+    font-size: clamp(2.4rem, 12.2vw, 15rem);
     font-weight: 800;
-    line-height: 0.72;
+    line-height: 0.78;
     letter-spacing: -0.05em;
     color: rgba(250, 247, 243, 0.075);
     pointer-events: none;
