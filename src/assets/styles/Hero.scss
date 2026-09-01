@@ -21,6 +21,10 @@
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
+    /* The portrait turns on its Y axis here. Without perspective on the
+       ancestor, rotateY is an orthographic squash — no near edge, no far
+       edge, and the turn reads as the image being crushed sideways. */
+    perspective: 1400px;
 }
 
 /* ── the headline ─────────────────────────────────────────────────────
@@ -69,6 +73,11 @@
     aspect-ratio: 3 / 4;
     border-radius: 10px;
     overflow: hidden;
+    transform-style: preserve-3d;
+    will-change: transform, filter;
+    /* Combined with translateX(-50%) from the centring above, so the rotation
+       pivots on the portrait's own middle rather than its left edge. */
+    transform-origin: 50% 50%;
 }
 
 .hero-portrait img {

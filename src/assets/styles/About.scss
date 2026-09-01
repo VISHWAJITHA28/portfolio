@@ -7,6 +7,9 @@
 .about { padding-block: var(--section-y); }
 
 .about-grid {
+    /* Matches the hero's, so the two halves of the turn share one axis. A
+       different value here and the handover reads as two separate rotations. */
+    perspective: 1400px;
     display: grid;
     gap: clamp(30px, 4vw, 56px);
     grid-template-columns: 1fr;
@@ -61,6 +64,8 @@
 
 .about-portrait {
     position: relative;
+    transform-style: preserve-3d;
+    will-change: transform;
     border-radius: 16px;
     overflow: hidden;
     aspect-ratio: 4 / 5;
