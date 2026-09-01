@@ -99,9 +99,12 @@ function Motion() {
       // Played on mount rather than on scroll: it is already in view, and
       // waiting for a scroll event would leave the first screen blank.
       gsap.timeline({ defaults: { ease: EASE, duration: DUR } })
-        .fromTo(".hero-meta", { y: 10, opacity: 0 }, { y: 0, opacity: 1 })
-        .fromTo(".hero-title", { y: 20, opacity: 0 }, { y: 0, opacity: 1 }, 0.08)
-        .fromTo(".hero-foot", { y: 10, opacity: 0 }, { y: 0, opacity: 1 }, 0.2);
+        .fromTo(".hero-pill", { y: -10, opacity: 0 }, { y: 0, opacity: 1 })
+        // Lines arrive in reading order, which is what makes a two-line
+        // headline read as a sentence rather than as a logo appearing.
+        .fromTo(".hero-line", { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.09 }, 0.06)
+        .fromTo(".hero-portrait", { y: 20, opacity: 0 }, { y: 0, opacity: 1 }, 0.22)
+        .fromTo(".hero-corners", { y: 10, opacity: 0 }, { y: 0, opacity: 1 }, 0.3);
     });
 
     const refresh = () => ScrollTrigger.refresh();

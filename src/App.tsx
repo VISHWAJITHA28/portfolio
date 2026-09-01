@@ -9,7 +9,6 @@ import {
   TechMarquee,
   Project,
   Contact,
-  Navigation,
   Footer,
 } from "./components";
 import FadeIn from './components/FadeIn';
@@ -32,7 +31,6 @@ function App() {
 
     return (
     <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
-        <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
         <FadeIn transitionDuration={700}>
             <Main/>
             <Statement/>

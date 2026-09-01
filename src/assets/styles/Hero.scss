@@ -1,59 +1,184 @@
 /* ── hero ─────────────────────────────────────────────────────────────────
-   One screen, one headline. The layout is a three-part stack: a thin meta row
-   at the top, the headline filling the middle, and the lede plus actions
-   pinned to the bottom. That arrangement is what makes the headline feel
-   framed rather than merely large.
+   Two lines of near-full-bleed uppercase, with the portrait layered behind so
+   the second line crosses it. The corners carry the small type; the middle of
+   the frame belongs to the overlap.
    ───────────────────────────────────────────────────────────────────────── */
 
 .hero {
-    min-height: 92vh;
-    display: flex;
-    align-items: stretch;
-    padding-block: clamp(96px, 14vh, 170px) clamp(40px, 7vh, 80px);
-}
-
-.hero .mn-wrap {
+    position: relative;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    /* Pushes the meta row up and the foot down, so the headline sits in the
-       optical centre without being vertically centred (which always reads as
-       slightly too high). */
-    justify-content: space-between;
-    gap: clamp(40px, 8vh, 90px);
+    justify-content: center;
+    overflow: hidden;
+    padding: clamp(84px, 12vh, 130px) var(--gutter) clamp(28px, 5vh, 56px);
 }
 
-.hero-meta {
+/* ── pill nav ── */
+
+.hero-pill {
+    position: absolute;
+    top: clamp(18px, 3vh, 34px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+
     display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding-bottom: 18px;
-    border-bottom: 1px solid var(--line);
+    align-items: center;
+    gap: clamp(30px, 6vw, 78px);
+    padding: 9px 9px 9px 24px;
+    border-radius: 999px;
+    background: var(--ink);
 }
+
+.hero-pill-name {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--bg);
+}
+
+.hero-pill-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(250, 247, 243, 0.16);
+    color: var(--bg);
+    font-size: 1.15rem;
+    line-height: 1;
+    transition: background 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.hero-pill-btn:hover { background: rgba(250, 247, 243, 0.3); color: var(--bg); }
+
+/* ── stage ── */
+
+.hero-stage {
+    position: relative;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+/* ── the headline ─────────────────────────────────────────────────────
+   Heavy, not medium. Body copy on this reference sits at weight 500, but the
+   hero is the one place it goes to 800: a headline this large at 500 looks
+   underexposed against the mass of the photo behind it.
+
+   Tracking is -0.05em. Both weight and size open the letter gaps up, so both
+   have to be pulled back further than usual.
+   ───────────────────────────────────────────────────────────────────────── */
 
 .hero-title {
-    /* Optical alignment: heavy uppercase carries visible side bearing, so a
-       flush-left headline looks indented next to the rule above it. */
-    margin-left: -0.045em;
+    position: relative;
+    z-index: 2;                 /* above the portrait */
+    margin: 0;
+    text-align: center;
+    font-weight: 800;
+    text-transform: uppercase;
+    /* vw-driven, so both lines stay near the frame edges at any width */
+    font-size: clamp(3.6rem, 15.5vw, 15rem);
+    line-height: 0.82;
+    letter-spacing: -0.05em;
+    color: var(--ink);
+    /* Off, so the type never swallows a click meant for what is behind it. */
+    pointer-events: none;
 }
 
-.hero-foot {
-    display: grid;
-    gap: clamp(28px, 4vw, 60px);
-    align-items: end;
-    grid-template-columns: 1fr;
+.hero-line { display: block; }
+
+/* ── portrait ─────────────────────────────────────────────────────────
+   Between the two lines, centred, and deliberately small. Any larger and it
+   competes with the type; at this size the type owns the frame and the photo
+   reads as something behind it.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hero-portrait {
+    position: absolute;
+    z-index: 1;
+    left: 50%;
+    /* 46% rather than 50%: optically centred against the headline's mass,
+       which sits above the true middle because of the descender space under
+       the second line. */
+    top: 46%;
+    transform: translateX(-50%);
+    width: clamp(150px, 15vw, 215px);
+    aspect-ratio: 3 / 4;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
-@media (min-width: 900px) {
-    .hero-foot { grid-template-columns: 1.25fr auto; }
+.hero-portrait img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 28%;
+    /* Graded down hard. A bright photograph behind black type destroys the
+       type's edge; darkening it keeps the headline the strongest thing in the
+       frame. */
+    filter: grayscale(1) contrast(1.25) brightness(0.42);
 }
 
-.hero-actions {
+/* ── corners ── */
+
+.hero-corners {
+    position: relative;
+    z-index: 3;
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: clamp(18px, 4vh, 44px);
 }
 
-@media screen and (max-width: 600px) {
-    .hero { min-height: 88vh; }
-    .hero-meta-right { display: none; }
+.hero-year {
+    font-size: clamp(2rem, 5vw, 4.4rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 0.9;
+    color: var(--ink);
+}
+
+.hero-since {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    color: var(--grey);
+    padding-bottom: 6px;
+}
+
+/* ── the star ── */
+
+.hero-star {
+    position: absolute;
+    z-index: 3;
+    top: -4%;
+    left: 2%;
+    width: clamp(42px, 6vw, 88px);
+    height: auto;
+    fill: var(--ink);
+    /* Constant, not eased. A mark that accelerates draws the eye back to it
+       repeatedly; a steady rotation settles into the background. */
+    animation: hero-star-spin 26s linear infinite;
+}
+
+@keyframes hero-star-spin {
+    from { transform: rotate(0deg) }
+    to   { transform: rotate(360deg) }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero-star { animation: none; }
+}
+
+/* ── narrow ── */
+
+@media screen and (max-width: 700px) {
+    .hero { min-height: 92vh; }
+    .hero-title { line-height: 0.86; }
+    .hero-portrait { width: clamp(118px, 32vw, 160px); top: 44%; }
+    .hero-since { display: none; }
+    .hero-pill { gap: 26px; padding-left: 18px; }
 }

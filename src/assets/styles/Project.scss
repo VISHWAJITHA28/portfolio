@@ -1,49 +1,222 @@
+/* ── projects: glass flip cards ───────────────────────────────────────────
+   Glassmorphism only works over something. On a flat cream ground a frosted
+   panel has nothing to refract and renders as a grey box, so this section
+   carries its own blurred colour field behind the grid.
+   ───────────────────────────────────────────────────────────────────────── */
+
 .projects-container {
-    display: flex;
-    flex-direction: column;
-    padding: 5% 10%;
-    text-align: left;
-}
-  
-.projects-container .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 50px;
-}
-  
-.projects-container .projects-grid .project {
-    text-align: left;
-}
-  
-.project h2:hover {
-    text-decoration: underline;
-    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out;
-}
-  
-.zoom {
-    border-radius: 5px;
-    transition: transform .2s;
-    margin: 0 auto;
-}
-  
-.zoom:hover {
-    transform: scale(1.05);
+    position: relative;
+    padding-block: var(--section-y);
+    overflow: hidden;
 }
 
-@media screen {
-    @media (max-width: 700px) {
-        .projects-container {
-            display: block;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
-  
-        .projects-container .projects-grid {
-            display: block;
-        }
-      
-        .projects-container .projects-grid .project {
-            padding-bottom: 5%;
-        }
+.projects-container h1 {
+    font-size: clamp(2.2rem, 5.4vw, 4.25rem);
+    font-weight: 500;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    margin: 14px 0 46px;
+}
+
+/* ── the field the glass frosts ── */
+
+.pfield { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+
+.pfield-blob {
+    position: absolute;
+    display: block;
+    border-radius: 50%;
+    filter: blur(90px);
+}
+.pfield-blob--a {
+    width: 46vw; height: 46vw; top: -8%; left: -6%;
+    background: radial-gradient(circle, rgba(126, 160, 214, 0.42), transparent 68%);
+}
+.pfield-blob--b {
+    width: 40vw; height: 40vw; top: 24%; right: -8%;
+    background: radial-gradient(circle, rgba(214, 168, 132, 0.40), transparent 68%);
+}
+.pfield-blob--c {
+    width: 38vw; height: 38vw; bottom: -10%; left: 28%;
+    background: radial-gradient(circle, rgba(158, 196, 178, 0.36), transparent 68%);
+}
+
+.projects-container .mn-wrap { position: relative; z-index: 1; }
+
+/* ── grid ── */
+
+.pgrid {
+    display: grid;
+    gap: 22px;
+    grid-template-columns: 1fr;
+}
+@media (min-width: 700px)  { .pgrid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1080px) { .pgrid { grid-template-columns: repeat(3, 1fr); } }
+
+/* ── the card ──────────────────────────────────────────────────────────
+   Perspective on the outer element, preserve-3d on the inner one. Both on the
+   same element gives a flat rotation with no depth, which is the single most
+   common way flip cards go wrong.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.pcard {
+    perspective: 1600px;
+    min-height: 360px;
+}
+
+.pcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    transform-style: preserve-3d;
+    transition: transform 720ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+.pcard.is-flipped .pcard-inner { transform: rotateY(180deg); }
+
+/* Hover-flip only where hovering is real. On touch it fires during a scroll. */
+@media (hover: hover) {
+    .pcard:hover .pcard-inner { transform: rotateY(180deg); }
+}
+
+.pcard-face {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    border-radius: 22px;
+    text-align: left;
+    /* Chrome takes the standard property, Safari still needs the prefix.
+       Without both, the hidden face bleeds through the visible one. */
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+
+    background: rgba(255, 255, 255, 0.42);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(22px) saturate(150%);
+    -webkit-backdrop-filter: blur(22px) saturate(150%);
+    box-shadow: 0 18px 44px -26px rgba(17, 17, 17, 0.35);
+}
+
+.pcard-front {
+    cursor: pointer;
+    appearance: none;
+    font: inherit;
+    color: inherit;
+    gap: 16px;
+}
+
+.pcard-back {
+    transform: rotateY(180deg);
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.6);
+}
+
+/* ── faces ── */
+
+.pcard-media {
+    display: block;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(17, 17, 17, 0.07);
+    line-height: 0;
+}
+.pcard-media img { width: 100%; height: auto; display: block; }
+
+.pcard-front-text { display: flex; flex-direction: column; gap: 4px; margin-top: auto; }
+
+.pcard-kind {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--grey);
+}
+
+.pcard-name {
+    font-size: 1.3rem;
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin: 0;
+    line-height: 1.1;
+}
+
+.pcard-hint {
+    position: absolute;
+    right: 22px;
+    bottom: 24px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: var(--grey);
+    opacity: 0;
+    transition: opacity 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.pcard-front:hover .pcard-hint,
+.pcard-front:focus-visible .pcard-hint { opacity: 1; }
+
+.pcard-body {
+    font-size: 0.92rem;
+    line-height: 1.5;
+    color: #4a4a4a;
+    margin: 0;
+}
+
+.pcard-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: auto 0 0;
+    padding: 0;
+}
+.pcard-stack li {
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 5px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(17, 17, 17, 0.14);
+    color: #333;
+}
+
+.pcard-actions { display: flex; gap: 10px; align-items: center; margin-top: 14px; }
+
+.pcard-open {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 20px;
+    border-radius: 999px;
+    background: var(--ink);
+    color: var(--bg);
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: opacity 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.pcard-open:hover { opacity: 0.85; color: var(--bg); }
+.pcard-open span { transition: transform 240ms cubic-bezier(0.44, 0, 0.56, 1); }
+.pcard-open:hover span { transform: translateX(3px); }
+
+.pcard-close {
+    appearance: none;
+    background: none;
+    border: 0;
+    padding: 11px 4px;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--grey);
+    cursor: pointer;
+}
+.pcard-close:hover { color: var(--ink); }
+
+/* A card mid-rotation has no readable face, so animating it in as well would
+   only look like a fault. */
+@media (prefers-reduced-motion: reduce) {
+    .pcard-inner { transition: none; }
+    @media (hover: hover) {
+        .pcard:hover .pcard-inner { transform: none; }
     }
 }
