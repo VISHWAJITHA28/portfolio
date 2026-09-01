@@ -6,7 +6,14 @@
     position: relative;
     background: #111111;
     color: var(--bg);
-    padding: clamp(70px, 10vh, 130px) 0 0;
+    padding: clamp(90px, 13vh, 170px) 0 0;
+    /* The footer is a closing panel, not a strip. Giving it real height is
+       what lets the statement, the columns and the watermark each have room
+       instead of being stacked tight. */
+    min-height: 88vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     overflow: hidden;
     text-align: left;
     /* Rounds the join with the cream section above, so the inversion reads as
@@ -24,9 +31,9 @@
     gap: clamp(38px, 5vw, 70px);
     grid-template-columns: 1fr;
     padding-top: clamp(46px, 7vh, 90px);
-    /* Clears the watermark, which now sits inside the frame rather than
-       hanging below it. */
-    padding-bottom: clamp(120px, 20vh, 250px);
+    /* Deep enough that the watermark's full cap height fits below the
+       columns without the two touching. */
+    padding-bottom: clamp(200px, 30vh, 400px);
 }
 
 @media (min-width: 900px) {
@@ -102,17 +109,18 @@
 .foot-mark {
     position: absolute;
     left: 50%;
-    /* Just clear of the bottom edge. It was at -90px, which pushed the whole
-       word below the frame and left only the tops of the letters showing. */
-    bottom: clamp(6px, 1.4vh, 24px);
+    /* Sits on the bottom edge. The footer is tall enough now that the full
+       cap height clears the columns above it. */
+    bottom: clamp(10px, 2vh, 34px);
     transform: translateX(-50%);
     z-index: 1;
     white-space: nowrap;
     /* VISHWAJITHA at weight 800 measures about 7.42em wide (11 caps at
-       ~0.72em advance, less the -0.05em tracking between them). At 12.2vw
-       that fills roughly 90% of the viewport, so the whole word is readable
-       with a margin either side. 15.5vw ran it off both edges. */
-    font-size: clamp(2.4rem, 12.2vw, 15rem);
+       ~0.72em advance, less the -0.05em tracking between them), so 13.4vw
+       lays it corner to corner: 13.4 x 7.42 is a hair under 100vw. Any larger
+       and the outer letters are cut; any smaller and it stops touching the
+       edges, which is the whole point of a watermark this size. */
+    font-size: clamp(2.4rem, 13.4vw, 17rem);
     font-weight: 800;
     line-height: 0.78;
     letter-spacing: -0.05em;
