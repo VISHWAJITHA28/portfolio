@@ -27,31 +27,22 @@ type Row = { items: string[]; reverse: boolean; seconds: number };
 
 const ROWS: Row[] = [
   {
-    // What I build with
-    items: [
-      "LangGraph", "LangChain", "RAG Pipelines", "Multi-Agent Systems",
-      "PyTorch", "TensorFlow", "scikit-learn", "OpenCV", "Prompt Engineering",
-    ],
+    // The core: language, framework, database, deployment.
+    items: ["Python", "FastAPI", "PostgreSQL", "Docker", "Azure"],
     reverse: false,
-    seconds: 42,
+    seconds: 34,
   },
   {
-    // What I build on
-    items: [
-      "GPT", "Claude", "Gemini", "LLaMA", "MedGemma",
-      "ChromaDB", "FAISS", "RDKit", "Pandas", "NumPy", "Vector Search",
-    ],
+    // The models.
+    items: ["PyTorch", "TensorFlow", "scikit-learn", "OpenCV"],
     reverse: true,
-    seconds: 36,
+    seconds: 28,
   },
   {
-    // What I ship it with
-    items: [
-      "Python", "TypeScript", "Java", "SQL", "FastAPI", "Flask",
-      "PostgreSQL", "Redis", "Docker", "Azure", "GCP", "React", "Next.js", "CI/CD",
-    ],
+    // The agentic layer.
+    items: ["LangGraph", "LangChain", "RAG", "Gemini"],
     reverse: false,
-    seconds: 48,
+    seconds: 31,
   },
 ];
 
@@ -65,9 +56,18 @@ function Track({ items, reverse, seconds }: Row) {
         {items.map((t) => (
           <span className="marquee-pill" key={t}>{t}</span>
         ))}
-        {/* The seamless half. Hidden from assistive tech so nothing is read twice. */}
         {items.map((t) => (
-          <span className="marquee-pill" key={`dup-${t}`} aria-hidden="true">{t}</span>
+          <span className="marquee-pill" key={`b-${t}`} aria-hidden="true">{t}</span>
+        ))}
+        {/* Four copies, not two. With only four or five items a single repeat
+            does not span a wide viewport, so a gap appears before the loop
+            point. The animation still translates -50%, which now lands on the
+            third copy — identical to the first, so the seam stays invisible. */}
+        {items.map((t) => (
+          <span className="marquee-pill" key={`c-${t}`} aria-hidden="true">{t}</span>
+        ))}
+        {items.map((t) => (
+          <span className="marquee-pill" key={`d-${t}`} aria-hidden="true">{t}</span>
         ))}
       </div>
     </div>

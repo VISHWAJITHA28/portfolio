@@ -1,0 +1,129 @@
+/* ── pill nav ─────────────────────────────────────────────────────────────
+   The bar, and the menu that drops from it.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.pill {
+    position: absolute;
+    top: clamp(18px, 3vh, 34px);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 40;
+    width: max-content;
+}
+
+.pill-bar {
+    display: flex;
+    align-items: center;
+    gap: clamp(26px, 5vw, 68px);
+    padding: 9px 9px 9px 24px;
+    border-radius: 999px;
+    background: var(--ink);
+}
+
+.pill-name {
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--bg);
+    white-space: nowrap;
+}
+
+/* ── the dots button ── */
+
+.pill-btn {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 34px;
+    border-radius: 999px;
+    background: rgba(250, 247, 243, 0.16);
+    transition: background 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.pill-btn:hover { background: rgba(250, 247, 243, 0.3); }
+
+.pill-dots { display: flex; gap: 3.5px; align-items: center; }
+.pill-dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--bg);
+    /* Each dot eases independently, so opening reads as the button reacting
+       rather than as three dots snapping to a new position. */
+    transition: transform 260ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+
+/* Open state: the outer dots pull in and the middle one drops, which reads as
+   a close affordance without swapping the glyph for an X. */
+.pill.is-open .pill-dots i:nth-child(1) { transform: translateX(3.5px); }
+.pill.is-open .pill-dots i:nth-child(2) { transform: translateY(4px); }
+.pill.is-open .pill-dots i:nth-child(3) { transform: translateX(-3.5px); }
+
+/* ── the menu ─────────────────────────────────────────────────────────
+   Animated on transform and opacity rather than height or display, so it can
+   ease. `visibility` rather than `display: none` keeps the transition alive
+   while still taking the closed menu out of the accessibility tree.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.pill-menu {
+    position: absolute;
+    top: calc(100% + 9px);
+    left: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    border-radius: 18px;
+    background: var(--ink);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.97);
+    transform-origin: top center;
+    transition: opacity 220ms cubic-bezier(0.44, 0, 0.56, 1),
+                transform 260ms cubic-bezier(0.44, 0, 0.56, 1),
+                visibility 0s linear 260ms;
+}
+
+.pill.is-open .pill-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+    /* No delay on the way in, so it appears immediately and eases open. */
+    transition-delay: 0s, 0s, 0s;
+}
+
+.pill-item {
+    padding: 11px 16px;
+    border-radius: 11px;
+    font-size: 0.94rem;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: rgba(250, 247, 243, 0.72);
+    white-space: nowrap;
+    transition: background 180ms cubic-bezier(0.44, 0, 0.56, 1),
+                color 180ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.pill-item:hover,
+.pill-item:focus-visible {
+    background: rgba(250, 247, 243, 0.1);
+    color: var(--bg);
+}
+
+/* ── dark ground (footer) ─────────────────────────────────────────────
+   On near-black the bar has to go lighter, not darker, or it vanishes.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.pill--dark .pill-bar { background: rgba(250, 247, 243, 0.08); }
+.pill--dark .pill-btn { background: var(--bg); }
+.pill--dark .pill-btn:hover { background: rgba(250, 247, 243, 0.82); }
+.pill--dark .pill-dots i { background: #111111; }
+.pill--dark .pill-menu { background: rgba(250, 247, 243, 0.08); backdrop-filter: blur(14px); }
+
+@media screen and (max-width: 600px) {
+    .pill-bar { gap: 20px; padding-left: 18px; }
+    .pill-name { font-size: 0.95rem; }
+}

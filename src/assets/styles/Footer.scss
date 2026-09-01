@@ -1,15 +1,122 @@
-footer {
-    text-align: center;
-    padding-top: 50px;
-    padding-bottom: 50px;
+/* ── footer ───────────────────────────────────────────────────────────────
+   Inverted, and framed by the clipped watermark along the bottom edge.
+   ───────────────────────────────────────────────────────────────────────── */
 
-    svg {
-        width: 1.1em !important;
-        height: 1.1em !important;
-        margin-right: 10px;
-    }
-
-    p {
-        font-size: 0.8em;
-    }
+.foot {
+    position: relative;
+    background: #111111;
+    color: var(--bg);
+    padding: clamp(70px, 10vh, 130px) 0 0;
+    overflow: hidden;
+    text-align: left;
+    /* Rounds the join with the cream section above, so the inversion reads as
+       a panel closing the page rather than a colour change mid-scroll. */
+    border-radius: 30px 30px 0 0;
+    margin-top: clamp(40px, 8vh, 100px);
 }
+
+/* ── the three columns ── */
+
+.foot-grid {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp(38px, 5vw, 70px);
+    grid-template-columns: 1fr;
+    padding-top: clamp(46px, 7vh, 90px);
+    padding-bottom: clamp(90px, 16vh, 190px);
+}
+
+@media (min-width: 900px) {
+    .foot-grid { grid-template-columns: 1.5fr 1fr 1fr; }
+}
+
+.foot-statement {
+    margin: 0;
+    font-size: clamp(2rem, 4.4vw, 3.5rem);
+    font-weight: 600;
+    line-height: 1.04;
+    letter-spacing: -0.04em;
+    color: var(--bg);
+}
+
+.foot-col { display: flex; flex-direction: column; gap: 18px; }
+
+.foot-col-title {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--bg);
+}
+
+/* Quick links as pills, matching the reference. */
+.foot-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.foot-links a {
+    display: inline-block;
+    padding: 10px 17px;
+    border-radius: 10px;
+    background: var(--bg);
+    color: #111111;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: opacity 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.foot-links a:hover { opacity: 0.8; color: #111111; }
+
+.foot-mail {
+    font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+    font-weight: 500;
+    color: rgba(250, 247, 243, 0.82);
+    width: fit-content;
+    border-bottom: 1px solid transparent;
+    transition: border-color 220ms cubic-bezier(0.44, 0, 0.56, 1),
+                color 220ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.foot-mail:hover { color: var(--bg); border-bottom-color: rgba(250, 247, 243, 0.5); }
+
+.foot-social { display: flex; gap: 18px; }
+.foot-social a {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: rgba(250, 247, 243, 0.5);
+    transition: color 200ms cubic-bezier(0.44, 0, 0.56, 1);
+}
+.foot-social a:hover { color: var(--bg); }
+
+/* ── watermark ────────────────────────────────────────────────────────
+   Sized in vw so it always spans the frame, and pushed below the bottom edge
+   so the letters are cut. Only just lighter than the ground: any brighter and
+   it stops being a watermark and starts competing with the columns.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.foot-mark {
+    position: absolute;
+    left: 50%;
+    bottom: clamp(-56px, -6vw, -22px);
+    transform: translateX(-50%);
+    z-index: 1;
+    white-space: nowrap;
+    font-size: clamp(6rem, 27vw, 26rem);
+    font-weight: 800;
+    line-height: 0.72;
+    letter-spacing: -0.05em;
+    color: rgba(250, 247, 243, 0.055);
+    pointer-events: none;
+    user-select: none;
+}
+
+@media screen and (max-width: 700px) {
+    .foot { border-radius: 22px 22px 0 0; }
+    .foot-grid { padding-bottom: clamp(70px, 12vh, 120px); }
+}
+
+/* The shared pill positions itself absolutely; the footer is its frame. */
+.foot .pill { top: clamp(20px, 3.4vh, 38px); }

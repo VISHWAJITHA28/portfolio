@@ -1,5 +1,6 @@
 import React from "react";
 import byru from '../assets/images/byru.jpg';
+import PillNav from './PillNav';
 import '../assets/styles/Hero.scss';
 
 /**
@@ -20,13 +21,7 @@ function Main() {
   return (
     <header className="hero" id="top">
 
-      {/* Floating pill nav, centred at the top. */}
-      <nav className="hero-pill" aria-label="Primary">
-        <span className="hero-pill-name">Byru</span>
-        <a className="hero-pill-btn" href="#projects" aria-label="Jump to work">
-          <span aria-hidden="true">&#8943;</span>
-        </a>
-      </nav>
+      <PillNav id="hero" />
 
       <div className="hero-stage">
         {/* A drawn four-point star, the reference's one decorative mark. */}
