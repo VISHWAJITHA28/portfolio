@@ -7,25 +7,27 @@ import '../assets/styles/Motion.scss';
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The motion layer: inertial scrolling, plus every scroll-driven reveal.
+ * The motion layer.
  *
- * WHY SMOOTH SCROLL IS THE FIRST THING
- *     It is the single change that most alters how a site feels, and it is why
- *     Framer and Webflow sites read as "designed" while the same layout in
- *     plain HTML reads as a document. A native scroll jumps by discrete wheel
- *     deltas; an inertial one carries momentum and eases out, so every
- *     scroll-linked animation underneath it also moves continuously instead of
- *     stepping. Without it, scrubbed animations look juddery no matter how
- *     well they are written.
+ * THE NUMBERS HERE ARE MEASURED, NOT CHOSEN
+ *     Read out of the reference's own markup: every reveal is opacity 0 -> 1
+ *     with a translateY of 10px or 20px, eased on cubic-bezier(.44, 0, .56, 1).
+ *     That is the entire vocabulary.
  *
- * WHY LENIS AND SCROLLTRIGGER MUST BE MARRIED
- *     Lenis takes over scrolling, so ScrollTrigger stops being told when the
- *     page moves and every trigger fires at the wrong moment. The two have to
- *     be joined explicitly: Lenis reports each frame to ScrollTrigger, and
- *     GSAP's ticker drives Lenis rather than Lenis running its own loop. Two
- *     independent loops is the usual cause of the drift people blame on
- *     ScrollTrigger.
+ *     An earlier version of this file used 40-60% translations, clip-path
+ *     uncovers and scrubbed parallax. All of it was wrong, and wrong in a
+ *     specific way: big motion draws attention to the motion. The reference
+ *     feels expensive because the movement is small enough that you notice the
+ *     content arriving rather than the animation playing.
+ *
+ * SO: 10px, 20px, and nothing else.
  */
+
+// The reference's easing, verbatim. Symmetric ease-in-out — it accelerates and
+// decelerates equally, which is why it reads as calm rather than snappy.
+const EASE = "cubic-bezier(0.44, 0, 0.56, 1)";
+const DUR = 0.7;
+
 function Motion() {
   useEffect(() => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -34,26 +36,22 @@ function Motion() {
       return;
     }
 
-    // ── inertial scroll ────────────────────────────────────────────────
     const lenis = new Lenis({
-      // ~1.05s to settle. Long enough to feel like weight, short enough that
-      // it never feels like the page is ignoring you.
       duration: 1.05,
-      // Exponential ease-out: fast off the mark, long tail.
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      // Touch devices already have native momentum; doubling it feels broken.
       smoothWheel: true,
       touchMultiplier: 1.6,
     });
 
+    // Lenis takes over scrolling, so ScrollTrigger must be told about every
+    // frame or its triggers fire against a stale scroll position. Driving
+    // Lenis from GSAP's ticker rather than its own loop keeps the two on one
+    // clock; two clocks is what causes the drift usually blamed on GSAP.
     lenis.on("scroll", ScrollTrigger.update);
-
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
 
-    // In-page anchors have to go through Lenis, or the browser's own jump
-    // fights the momentum and lands in the wrong place.
     const onAnchor = (e: MouseEvent) => {
       const a = (e.target as HTMLElement).closest?.('a[href^="#"]');
       if (!a) return;
@@ -66,70 +64,44 @@ function Motion() {
     };
     document.addEventListener("click", onAnchor);
 
-    // ── reveals ────────────────────────────────────────────────────────
     const ctx = gsap.context(() => {
-      // Headings rise.
+      // ── 20px for anything that leads a section ──────────────────────
       gsap.utils.toArray<HTMLElement>(
-        "#projects h1, #history h1, #education h1, #contact h1, .marquee-head h2"
+        "#projects h1, #history h1, #education h1, #contact h1, " +
+        ".marquee-head h2, .statement-head, .mn-slug"
       ).forEach((el) => {
         gsap.fromTo(el,
-          { yPercent: 40, opacity: 0 },
+          { y: 20, opacity: 0 },
           {
-            yPercent: 0, opacity: 1, duration: 1.1, ease: "power3.out",
-            scrollTrigger: { trigger: el, start: "top 88%", once: true },
-          });
-      });
-
-      // Project images uncover rather than fade. A clip reveal reads as
-      // something being shown; opacity reads as something loading.
-      gsap.utils.toArray<HTMLElement>(".project").forEach((card, i) => {
-        const img = card.querySelector("img");
-        if (img) {
-          gsap.fromTo(img,
-            { clipPath: "inset(0% 0% 100% 0%)", scale: 1.12 },
-            {
-              clipPath: "inset(0% 0% 0% 0%)", scale: 1,
-              duration: 1.25, ease: "power3.out",
-              scrollTrigger: { trigger: card, start: "top 85%", once: true },
-            });
-        }
-        gsap.fromTo(card.querySelectorAll("h2, p"),
-          { y: 26, opacity: 0 },
-          {
-            y: 0, opacity: 1, duration: 0.85, ease: "power2.out",
-            stagger: 0.08, delay: 0.15,
-            scrollTrigger: { trigger: card, start: "top 85%", once: true },
-          });
-      });
-
-      // Cards settle in sequence.
-      gsap.utils.toArray<HTMLElement>(
-        "#education .skill, #contact .contact-link, .vertical-timeline-element"
-      ).forEach((el, i) => {
-        gsap.fromTo(el,
-          { y: 48, opacity: 0 },
-          {
-            y: 0, opacity: 1, duration: 0.95, ease: "power3.out",
-            delay: (i % 3) * 0.07,
+            y: 0, opacity: 1, duration: DUR, ease: EASE,
             scrollTrigger: { trigger: el, start: "top 90%", once: true },
           });
       });
 
-      // Hero recedes as you leave it: two rates, so it has depth.
-      const heroTitle = document.querySelector(".hero-title");
-      const heroFoot = document.querySelector(".hero-foot");
-      if (heroTitle) {
-        gsap.to(heroTitle, {
-          yPercent: 24, opacity: 0.15, ease: "none",
-          scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-        });
-      }
-      if (heroFoot) {
-        gsap.to(heroFoot, {
-          yPercent: 60, opacity: 0, ease: "none",
-          scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-        });
-      }
+      // ── 10px for everything that follows ────────────────────────────
+      gsap.utils.toArray<HTMLElement>(
+        ".project, #education .skill, #contact .contact-link, " +
+        ".vertical-timeline-element, .statement-body, #about .about-body p, " +
+        "#contact .contact_wrapper > p, .marquee-eyebrow"
+      ).forEach((el, i) => {
+        gsap.fromTo(el,
+          { y: 10, opacity: 0 },
+          {
+            y: 0, opacity: 1, duration: DUR, ease: EASE,
+            // A short stagger within a group, so a grid does not snap in as
+            // one block. Capped at three so a long list never crawls.
+            delay: (i % 3) * 0.06,
+            scrollTrigger: { trigger: el, start: "top 92%", once: true },
+          });
+      });
+
+      // ── the hero, on load ───────────────────────────────────────────
+      // Played on mount rather than on scroll: it is already in view, and
+      // waiting for a scroll event would leave the first screen blank.
+      gsap.timeline({ defaults: { ease: EASE, duration: DUR } })
+        .fromTo(".hero-meta", { y: 10, opacity: 0 }, { y: 0, opacity: 1 })
+        .fromTo(".hero-title", { y: 20, opacity: 0 }, { y: 0, opacity: 1 }, 0.08)
+        .fromTo(".hero-foot", { y: 10, opacity: 0 }, { y: 0, opacity: 1 }, 0.2);
     });
 
     const refresh = () => ScrollTrigger.refresh();

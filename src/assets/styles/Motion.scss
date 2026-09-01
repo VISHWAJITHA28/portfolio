@@ -4,9 +4,10 @@ html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* Cards lift on hover. Small distance, long easing: a big jump reads as a
-   button, a small drift reads as a surface responding. */
-.project { transition: transform 520ms cubic-bezier(.2,.8,.2,1); }
-.project:hover { transform: translateY(-6px); }
+/* The reference's own hover transition, verbatim: .2s on that symmetric
+   curve. Fast and small — hover feedback, not an animation. */
+.project, .project img, .mn-btn, .contact-link {
+    transition: all 0.2s cubic-bezier(0.44, 0, 0.56, 1);
+}
 
 .project a img { display: block; }

@@ -152,30 +152,6 @@ a { color: inherit; text-decoration: none; }
 }
 .mn-link:hover::after { transform: scaleX(1); }
 
-/* ── word reveal ──────────────────────────────────────────────────────
-   The reference splits its statement paragraph into individual words so each
-   can arrive separately as you scroll. The wrapper clips, the inner span
-   moves — that is what produces a rise from behind the line rather than a
-   fade in place.
-   ───────────────────────────────────────────────────────────────────────── */
-
-.mn-word {
-    display: inline-block;
-    overflow: hidden;
-    vertical-align: top;
-}
-.mn-word > span {
-    display: inline-block;
-    transform: translateY(105%);
-    will-change: transform;
-}
-.no-gsap .mn-word > span { transform: none !important; }
-
-@media (prefers-reduced-motion: reduce) {
-    .mn-word { overflow: visible; }
-    .mn-word > span { transform: none !important; }
-}
-
 .mn-reveal { opacity: 0; will-change: transform, opacity; }
 .no-gsap .mn-reveal { opacity: 1 !important; transform: none !important; }
 @media (prefers-reduced-motion: reduce) {

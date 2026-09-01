@@ -33,7 +33,3 @@
 @media (min-width: 1000px) {
     .statement-body { padding-left: 8%; }
 }
-
-/* The clipping window needs a little vertical slack or descenders on letters
-   like g and y get shaved off as the word rises. */
-.statement .mn-word { padding-bottom: 0.12em; margin-bottom: -0.12em; }
