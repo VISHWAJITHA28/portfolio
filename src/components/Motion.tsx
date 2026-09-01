@@ -83,7 +83,12 @@ function Motion() {
         // Deliberately NOT .pdeck-card or .case-panel: both carry their own
         // transform (pile depth, unfold) and a GSAP inline transform would
         // overwrite it. Their containers get the reveal instead.
-        ".pdeck-index-btn, .hist-row .case, #education .skill, " +
+        // NOT .pdeck-index-btn. Each row got its own ScrollTrigger, and a
+        // reveal that sets opacity 0 up front strands its element invisible
+        // if the trigger never fires - which is exactly what a short list
+        // stacked inside one viewport is prone to. Seven rows of contents
+        // gain nothing from a stagger and lose everything if one misses.
+        ".hist-row .case, #education .skill, " +
         "#contact .contact-link, .statement-body, .about-right p, " +
         "#contact .contact_wrapper > p, .marquee-eyebrow, " +
         ".hist-lede, .pdeck-lede"

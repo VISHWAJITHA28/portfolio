@@ -255,6 +255,9 @@
     line-height: 1;
 }
 
+/* The total, quieter than the card's own number. */
+.pdeck-count-of { color: rgba(255, 255, 255, 0.62); }
+
 .pdeck-text {
     position: relative;
     z-index: 2;

@@ -251,8 +251,14 @@ function Project() {
 
                 <div className="pdeck-media">
                   <img src={p.img} alt="" />
+                  {/* "03 / 07", not "03". Only four of the seven are painted
+                      at a time, so a bare number reads as a total and makes
+                      the deck look like it holds four projects. */}
                   <span className="pdeck-count">
                     {String(i + 1).padStart(2, "0")}
+                    <span className="pdeck-count-of">
+                      {" / "}{String(PROJECTS.length).padStart(2, "0")}
+                    </span>
                   </span>
                 </div>
 
