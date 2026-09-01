@@ -1,0 +1,39 @@
+/* ── statement ────────────────────────────────────────────────────────────
+   The headline runs at display scale; the paragraph deliberately does not.
+   Setting both large would flatten the section into one grey block — the
+   contrast between them is what makes the headline land.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.statement {
+    padding-block: var(--section-y);
+    border-top: 1px solid var(--line);
+}
+
+.statement-slug { margin-bottom: clamp(28px, 5vh, 56px); }
+
+.statement-head {
+    /* Optical alignment. Uppercase carries side bearing, so a flush-left
+       headline reads as indented against the slug above it. */
+    margin-left: -0.035em;
+    max-width: 20ch;
+}
+
+.statement-body {
+    margin: clamp(40px, 7vh, 90px) 0 0 auto;
+    /* Offset right, so the block sits against the headline rather than under
+       it. Full-width body copy under a full-width headline reads as a wall. */
+    max-width: 54ch;
+    font-size: clamp(1.15rem, 2vw, 1.7rem);
+    line-height: 1.42;
+    letter-spacing: -0.025em;
+    font-weight: 500;
+    color: var(--ink);
+}
+
+@media (min-width: 1000px) {
+    .statement-body { padding-left: 8%; }
+}
+
+/* The clipping window needs a little vertical slack or descenders on letters
+   like g and y get shaved off as the word rises. */
+.statement .mn-word { padding-bottom: 0.12em; margin-bottom: -0.12em; }

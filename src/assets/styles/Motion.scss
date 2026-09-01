@@ -1,0 +1,12 @@
+/* Lenis needs these two rules or the page keeps its native scrollbar
+   behaviour alongside the virtual one, and the two fight. */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+/* Cards lift on hover. Small distance, long easing: a big jump reads as a
+   button, a small drift reads as a surface responding. */
+.project { transition: transform 520ms cubic-bezier(.2,.8,.2,1); }
+.project:hover { transform: translateY(-6px); }
+
+.project a img { display: block; }

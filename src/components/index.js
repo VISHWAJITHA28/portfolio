@@ -1,3 +1,5 @@
+export { default as Statement } from "./Statement";
+export { default as Motion } from "./Motion";
 export { default as Navigation } from "./Navigation";
 export { default as Footer } from "./Footer";
 export { default as Main } from "./Main";

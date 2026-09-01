@@ -1,44 +1,39 @@
-/* ── minimal ──────────────────────────────────────────────────────────────
-   White ground, black type, no accent colour at all.
+/* ── the ground ───────────────────────────────────────────────────────────
+   Values taken from the reference rather than guessed.
 
-   The discipline here is subtractive. With no colour to lean on, hierarchy has
-   to come from size, weight and space — which is why the type scale is so
-   wide (a 12px label against a 100px headline) and why the vertical rhythm is
-   so generous. Add an accent and the whole thing stops working, because the
-   eye starts following the colour instead of the structure.
+   The ground is #FAF7F3, a warm cream — not white. That single choice is what
+   separates this look from a default Tailwind page: pure white reads as an
+   unstyled document, while a warm off-white reads as paper and makes #111111
+   sit on it like ink rather than like text on a screen.
 
-   Grey is the only concession, and only for secondary text.
+   The dominant weight is 500, not 800. Medium at a large size with tight
+   tracking reads as confident; heavy at a large size reads as loud. That is
+   the whole difference in tone.
    ───────────────────────────────────────────────────────────────────────── */
 
 :root {
-    --bg: #ffffff;
-    --bg-alt: #f4f4f2;
-    --ink: #000000;
-    --ink-2: #1a1a1a;
-    --muted: #6e6e6e;
-    --faint: #a3a3a3;
-    --line: #e3e3e1;
-    --line-strong: #000000;
+    --bg: #faf7f3;
+    --bg-2: #f2ede6;
+    --ink: #111111;
+    --grey: #999999;
+    --line: rgba(17, 17, 17, 0.1);
 
-    --display: "Archivo", "Helvetica Neue", Arial, sans-serif;
-    --body: "Manrope", system-ui, sans-serif;
+    --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
-    --page: 1320px;
-    --gutter: clamp(22px, 5vw, 72px);
-
-    /* One rhythm value drives every gap on the page. */
-    --section-y: clamp(84px, 12vh, 190px);
+    --page: 1240px;
+    --gutter: clamp(20px, 5vw, 60px);
+    --section-y: clamp(90px, 13vh, 200px);
 }
-
-/* ── shell ───────────────────────────────────────────────────────────── */
 
 body {
     margin: 0;
     background: var(--bg) !important;
     color: var(--ink) !important;
-    font-family: var(--body) !important;
-    font-size: 17px !important;
-    line-height: 1.55;
+    font-family: var(--font) !important;
+    font-size: 18px !important;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: -0.02em;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -52,106 +47,99 @@ body {
 }
 
 .mn-section { padding-block: var(--section-y); }
-
 .mn-rule { height: 1px; background: var(--line); border: 0; margin: 0; }
 
 /* ── type ─────────────────────────────────────────────────────────────
-   Headlines are uppercase, heavy, and tracked TIGHT. Uppercase at a heavy
-   weight naturally opens up, so negative tracking is what stops it reading as
-   a shouty banner and makes it read as a set headline instead.
+   Two tracking values, matching the reference: -0.04em on anything large,
+   -0.02em everywhere else. Large type needs more negative tracking because
+   letter gaps scale with the glyphs while the eye's tolerance for them
+   does not.
    ───────────────────────────────────────────────────────────────────────── */
 
-.mn-display {
-    font-family: var(--display);
-    font-weight: 800;
+.mn-huge {
+    font-family: var(--font);
+    font-weight: 500;
     text-transform: uppercase;
-    font-size: clamp(2.9rem, 9vw, 8.2rem);
-    line-height: 0.92;
-    letter-spacing: -0.035em;
+    font-size: clamp(3rem, 13vw, 11rem);
+    line-height: 0.88;
+    letter-spacing: -0.04em;
     margin: 0;
     color: var(--ink);
 }
 
 .mn-h2 {
-    font-family: var(--display);
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.9rem, 4.6vw, 4rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
+    font-family: var(--font);
+    font-weight: 500;
+    font-size: clamp(2.2rem, 5.4vw, 4.25rem);
+    line-height: 1.02;
+    letter-spacing: -0.04em;
     margin: 0;
     color: var(--ink);
 }
 
 .mn-h3 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(1.15rem, 1.8vw, 1.5rem);
-    line-height: 1.18;
-    letter-spacing: -0.018em;
+    font-weight: 500;
+    font-size: clamp(1.25rem, 1.9vw, 1.6rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     margin: 0;
     color: var(--ink);
 }
 
-/* The slashed label, borrowed from editorial layout: a slug that tells you
-   where you are without taking a heading's weight. */
-.mn-label {
-    font-family: var(--body);
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.14em;
+/* The slug. A leading slash instead of a rule or a colour — it costs nothing
+   and it is the reference's most recognisable device. */
+.mn-slug {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--grey);
     margin: 0;
 }
-.mn-label::before { content: "/ "; }
+.mn-slug::before { content: "/"; margin-right: 2px; }
 
 .mn-lede {
-    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
-    line-height: 1.55;
-    color: var(--ink-2);
-    max-width: 60ch;
+    font-size: clamp(1rem, 1.35vw, 1.15rem);
+    line-height: 1.5;
+    letter-spacing: -0.02em;
+    color: var(--grey);
+    max-width: 46ch;
     margin: 0;
 }
 
-.mn-body { font-size: 1rem; line-height: 1.62; color: var(--muted); max-width: 62ch; margin: 0 }
+.mn-body { font-size: 1rem; line-height: 1.55; color: var(--grey); margin: 0; }
 
-/* ── links and buttons ───────────────────────────────────────────────── */
+/* ── controls ─────────────────────────────────────────────────────────── */
 
-a { color: inherit; text-decoration: none }
+a { color: inherit; text-decoration: none; }
 
 .mn-btn {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    padding: 16px 30px;
+    gap: 9px;
+    padding: 15px 26px;
     border-radius: 999px;
     background: var(--ink);
     color: var(--bg);
     font-size: 0.9rem;
-    font-weight: 700;
-    letter-spacing: 0.01em;
-    /* Only the arrow moves on hover. Moving the whole button is the reflex;
-       moving one glyph inside it is the detail people notice. */
+    font-weight: 500;
+    letter-spacing: -0.01em;
     transition: opacity 200ms ease;
 }
-.mn-btn:hover { opacity: 0.82; color: var(--bg) }
-.mn-btn span { transition: transform 260ms cubic-bezier(.2,.8,.2,1) }
-.mn-btn:hover span { transform: translateX(5px) }
+.mn-btn:hover { opacity: 0.85; color: var(--bg); }
+/* Only the arrow moves. Sliding the whole button is the reflex; moving one
+   glyph inside it is the detail people actually register. */
+.mn-btn span { transition: transform 260ms cubic-bezier(.2,.8,.2,1); }
+.mn-btn:hover span { transform: translateX(4px); }
 
 .mn-btn--ghost {
     background: transparent;
     color: var(--ink);
-    border: 1px solid var(--line-strong);
+    border: 1px solid rgba(17, 17, 17, 0.18);
 }
-.mn-btn--ghost:hover { background: var(--ink); color: var(--bg) }
+.mn-btn--ghost:hover { background: var(--ink); color: var(--bg); }
 
-/* An underline that draws itself, rather than a colour change. */
-.mn-link {
-    position: relative;
-    font-weight: 600;
-    padding-bottom: 2px;
-}
+.mn-link { position: relative; font-weight: 500; padding-bottom: 2px; }
 .mn-link::after {
     content: "";
     position: absolute;
@@ -162,16 +150,34 @@ a { color: inherit; text-decoration: none }
     transform-origin: left;
     transition: transform 340ms cubic-bezier(.2,.8,.2,1);
 }
-.mn-link:hover::after { transform: scaleX(1) }
+.mn-link:hover::after { transform: scaleX(1); }
 
-/* ── reveal ───────────────────────────────────────────────────────────
-   Deliberately plain: fade and a short rise. On a page with no colour, showy
-   motion is the thing that would cheapen it.
+/* ── word reveal ──────────────────────────────────────────────────────
+   The reference splits its statement paragraph into individual words so each
+   can arrive separately as you scroll. The wrapper clips, the inner span
+   moves — that is what produces a rise from behind the line rather than a
+   fade in place.
    ───────────────────────────────────────────────────────────────────────── */
 
-.mn-reveal { opacity: 0; will-change: transform, opacity }
-.no-gsap .mn-reveal { opacity: 1 !important; transform: none !important }
+.mn-word {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+}
+.mn-word > span {
+    display: inline-block;
+    transform: translateY(105%);
+    will-change: transform;
+}
+.no-gsap .mn-word > span { transform: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
-    .mn-reveal { opacity: 1 !important; transform: none !important }
+    .mn-word { overflow: visible; }
+    .mn-word > span { transform: none !important; }
+}
+
+.mn-reveal { opacity: 0; will-change: transform, opacity; }
+.no-gsap .mn-reveal { opacity: 1 !important; transform: none !important; }
+@media (prefers-reduced-motion: reduce) {
+    .mn-reveal { opacity: 1 !important; transform: none !important; }
 }
