@@ -24,7 +24,9 @@
     gap: clamp(38px, 5vw, 70px);
     grid-template-columns: 1fr;
     padding-top: clamp(46px, 7vh, 90px);
-    padding-bottom: clamp(90px, 16vh, 190px);
+    /* More room under the columns, so the watermark has space to be big
+       without colliding with the contact block. */
+    padding-bottom: clamp(150px, 24vh, 300px);
 }
 
 @media (min-width: 900px) {
@@ -100,15 +102,20 @@
 .foot-mark {
     position: absolute;
     left: 50%;
-    bottom: clamp(-56px, -6vw, -22px);
+    /* Sits lower and runs wider than the frame, so the letters are cut top
+       and bottom rather than merely resting near the edge. */
+    bottom: clamp(-90px, -8vw, -34px);
     transform: translateX(-50%);
     z-index: 1;
     white-space: nowrap;
-    font-size: clamp(6rem, 27vw, 26rem);
+    /* 11 letters now instead of 4, so the vw figure has to come down or the
+         word runs off the sides. Still far larger on screen than before,
+         because it no longer has to fit four wide characters. */
+    font-size: clamp(4.4rem, 15.5vw, 19rem);
     font-weight: 800;
     line-height: 0.72;
     letter-spacing: -0.05em;
-    color: rgba(250, 247, 243, 0.055);
+    color: rgba(250, 247, 243, 0.075);
     pointer-events: none;
     user-select: none;
 }

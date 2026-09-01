@@ -166,3 +166,48 @@ a { color: inherit; text-decoration: none; }
 @media (prefers-reduced-motion: reduce) {
     .mn-reveal { opacity: 1 !important; transform: none !important; }
 }
+
+
+/* ── paper ────────────────────────────────────────────────────────────────
+   Flat cream reads as a screen. Real paper has tooth, and the grain is what
+   makes an off-white feel like a surface rather than a fill value.
+
+   Two layers doing different jobs:
+     - fine noise, for tooth
+     - a very wide, very faint mottle, for the unevenness a sheet has across
+       its width. Noise alone still looks machine-made because it is uniform.
+
+   Both are inline SVG turbulence, so there is no image request and it scales
+   to any viewport. Fixed, so the texture belongs to the page rather than
+   sliding under the content as you scroll.
+   ───────────────────────────────────────────────────────────────────────── */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23t)' opacity='0.42'/%3E%3C/svg%3E");
+    /* Multiply rather than overlay: the grain darkens the cream slightly
+       instead of adding grey on top of it, which is how ink sits in paper. */
+    mix-blend-mode: multiply;
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.55;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='900' height='900'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='900' height='900' filter='url(%23m)' opacity='0.2'/%3E%3C/svg%3E");
+    background-size: 900px 900px;
+    mix-blend-mode: multiply;
+}
+
+/* Content sits above both layers. The footer inverts to near-black, where a
+   multiply grain would do nothing, so it opts out and keeps its own surface. */
+.main-container { position: relative; z-index: 1; }
+.foot { isolation: isolate; }

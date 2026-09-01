@@ -5,80 +5,76 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * The hero-to-about portrait turn.
+ * Drives the portrait turn from scroll position.
  *
- * WHAT IT LOOKS LIKE
- *     Scrolling out of the hero, the small graded portrait rotates away on its
- *     Y axis until it is nearly edge-on — a thin sliver — and the larger colour
- *     portrait in About rotates in from the other side to meet it. Read as one
- *     move, the picture appears to turn from dark and small to colour and
- *     large.
+ * The script only ever writes two custom properties — --turn and --lit — and
+ * Portrait3D.scss decides what those mean for the face, the edge, the specular
+ * band and the cast shadow. Keeping the physics in CSS and the timing in JS is
+ * what stops this becoming a pile of hard-coded transforms that have to be
+ * kept in sync by hand.
  *
- * WHY TWO ELEMENTS AND NOT ONE
- *     One element travelling between two layouts means animating position
- *     across a document flow change, which needs FLIP and breaks the moment
- *     either section reflows. Two elements handing over at the edge-on frame
- *     costs nothing: at 85 degrees both are only a few pixels wide, so the
- *     swap is genuinely invisible. The illusion is in the shared axis and the
- *     matched timing, not in it being the same node.
- *
- * WHY SCRUBBED AND NOT PLAYED
- *     The turn is tied to scroll position, so the reader drives it. Played on
- *     entry it would fire once, usually before it is fully in view, and never
- *     reverse when scrolling back up.
+ * --lit is derived from the ABSOLUTE turn, so the surface dims the same amount
+ * whichever way it rotates. Driving it from the signed angle would light one
+ * direction and shadow the other.
  */
 function PortraitTravel() {
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const hero = document.querySelector<HTMLElement>(".hero-portrait");
-    const about = document.querySelector<HTMLElement>(".about-portrait");
+    const hero = document.querySelector<HTMLElement>(".p3d--hero");
+    const about = document.querySelector<HTMLElement>(".p3d--about");
     if (!hero || !about) return;
 
+    const setLit = (el: HTMLElement, deg: number) =>
+      el.style.setProperty("--lit", String(Math.min(1, Math.abs(deg) / 90)));
+
     const ctx = gsap.context(() => {
-      // ── the hero copy turns away ─────────────────────────────────────
+      // ── hero: turns away and grows toward the viewer ─────────────────
+      const heroTurn = { deg: 0 };
       gsap.timeline({
         scrollTrigger: {
           trigger: ".hero",
           start: "top top",
           end: "bottom top",
-          scrub: 0.5,
+          scrub: 0.6,
         },
       })
-        // Growing while it turns is what sells it as one object coming toward
-        // you rather than two pictures swapping.
-        .to(hero, {
-          rotateY: -85,
-          scale: 1.55,
-          xPercent: -4,
+        .to(heroTurn, {
+          deg: -78,
           ease: "none",
-        }, 0)
-        // The grade lifts on the way round, so the colour arrives with the
-        // rotation rather than as a separate change.
-        .to(hero, {
-          filter: "grayscale(0) contrast(1.12) brightness(1)",
-          ease: "none",
-        }, 0)
-        // Only at the very end, once it is nearly edge-on and a few pixels
-        // wide, so the cut cannot be seen.
-        .to(hero, { autoAlpha: 0, ease: "none", duration: 0.12 }, 0.88);
-
-      // ── the about copy turns in ──────────────────────────────────────
-      gsap.fromTo(about,
-        { rotateY: 88, scale: 0.82, transformOrigin: "50% 50%" },
-        {
-          rotateY: 0,
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: ".about",
-            // Begins while About is still below the fold, so the two halves
-            // overlap and the handover lands in the middle of the turn.
-            start: "top bottom",
-            end: "center center",
-            scrub: 0.5,
+          onUpdate: () => {
+            hero.style.setProperty("--turn", `${heroTurn.deg}deg`);
+            setLit(hero, heroTurn.deg);
           },
-        });
+        }, 0)
+        // Growing as it turns is what reads as the object approaching rather
+        // than merely spinning in place.
+        .to(hero, { scale: 1.5, ease: "none" }, 0)
+        .to(hero, { autoAlpha: 0, ease: "none", duration: 0.1 }, 0.9);
+
+      // ── about: turns in to meet it ───────────────────────────────────
+      const aboutTurn = { deg: 82 };
+      gsap.to(aboutTurn, {
+        deg: 0,
+        ease: "none",
+        onUpdate: () => {
+          about.style.setProperty("--turn", `${aboutTurn.deg}deg`);
+          setLit(about, aboutTurn.deg);
+        },
+        scrollTrigger: {
+          trigger: ".about",
+          // Starts while About is still below the fold, so the halves overlap
+          // and the handover happens mid-turn where both are near edge-on.
+          start: "top bottom",
+          end: "center center",
+          scrub: 0.6,
+        },
+      });
+
+      // Set the opening state immediately, or the About card sits flat until
+      // the first scroll event fires.
+      about.style.setProperty("--turn", "82deg");
+      setLit(about, 82);
     });
 
     const refresh = () => ScrollTrigger.refresh();

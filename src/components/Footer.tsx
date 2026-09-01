@@ -60,7 +60,7 @@ function Footer() {
 
       </div>
 
-      <div className="foot-mark" aria-hidden="true">BYRU</div>
+      <div className="foot-mark" aria-hidden="true">VISHWAJITHA</div>
     </footer>
   );
 }

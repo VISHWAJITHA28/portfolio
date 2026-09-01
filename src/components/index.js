@@ -1,3 +1,4 @@
+export { default as Portrait3D } from "./Portrait3D";
 export { default as PortraitTravel } from "./PortraitTravel";
 export { default as PillNav } from "./PillNav";
 export { default as Statement } from "./Statement";

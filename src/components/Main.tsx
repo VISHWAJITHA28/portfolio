@@ -1,6 +1,6 @@
 import React from "react";
-import byru from '../assets/images/byru.jpg';
 import PillNav from './PillNav';
+import Portrait3D from './Portrait3D';
 import '../assets/styles/Hero.scss';
 
 /**
@@ -29,10 +29,8 @@ function Main() {
           <path d="M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z" />
         </svg>
 
-        {/* Behind the headline on purpose — see the note above. */}
-        <div className="hero-portrait">
-          <img src={byru} alt="Byru Vishwajitha" />
-        </div>
+        {/* Behind the headline on purpose. */}
+        <Portrait3D variant="hero" />
 
         <h1 className="hero-title">
           <span className="hero-line">AI</span>

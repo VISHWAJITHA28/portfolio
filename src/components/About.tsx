@@ -1,5 +1,5 @@
 import React from "react";
-import byru from '../assets/images/byru.jpg';
+import Portrait3D from './Portrait3D';
 import '../assets/styles/About.scss';
 
 /**
@@ -29,7 +29,7 @@ function About() {
         </div>
 
         <div className="about-portrait">
-          <img src={byru} alt="Byru Vishwajitha" />
+          <Portrait3D variant="about" />
         </div>
 
         <div className="about-right">
