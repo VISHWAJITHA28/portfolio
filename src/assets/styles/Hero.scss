@@ -74,12 +74,24 @@
     color: var(--ink);
 }
 
-.hero-since {
-    font-size: 0.75rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    color: var(--grey);
-    padding-bottom: 6px;
+/* ── the bolt ─────────────────────────────────────────────────────────
+   The mark that replaced the "building since" line. A caption there was
+   filler; a second drawn mark makes the two bottom corners answer each other,
+   which is what the frame wanted in the first place.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hero-bolt {
+    width: clamp(30px, 3.6vw, 52px);
+    height: auto;
+    overflow: visible;
+    /* Slow and shallow. Anything faster turns a mark into a distraction next
+       to a headline this size. */
+    animation: hero-bolt-bob 6s ease-in-out infinite;
+}
+
+@keyframes hero-bolt-bob {
+    0%, 100% { transform: translateY(0) rotate(-4deg); }
+    50%      { transform: translateY(-7px) rotate(4deg); }
 }
 
 /* ── the star ── */
@@ -91,7 +103,6 @@
     left: 2%;
     width: clamp(42px, 6vw, 88px);
     height: auto;
-    fill: var(--ink);
     /* Constant, not eased. A mark that accelerates draws the eye back to it
        repeatedly; a steady rotation settles into the background. */
     animation: hero-star-spin 26s linear infinite;
@@ -103,7 +114,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .hero-star { animation: none; }
+    .hero-star,
+    .hero-bolt { animation: none; }
 }
 
 /* ── narrow ── */
@@ -112,5 +124,5 @@
     .hero { min-height: 92vh; }
     .hero-title { line-height: 0.86; }
     .hero-portrait { width: clamp(118px, 32vw, 160px); top: 44%; }
-    .hero-since { display: none; }
+    .hero-bolt { width: 30px; }
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import PillNav from './PillNav';
+import Mark from './Mark';
 import Portrait3D from './Portrait3D';
 import '../assets/styles/Hero.scss';
 
@@ -24,10 +25,9 @@ function Main() {
       <PillNav id="hero" />
 
       <div className="hero-stage">
-        {/* A drawn four-point star, the reference's one decorative mark. */}
-        <svg className="hero-star" viewBox="0 0 100 100" aria-hidden="true">
-          <path d="M50 0 C54 32 68 46 100 50 C68 54 54 68 50 100 C46 68 32 54 0 50 C32 46 46 32 50 0 Z" />
-        </svg>
+        {/* The star, as a solid object with an iridescent bevel rather than a
+            flat glyph. See Mark.tsx. */}
+        <Mark shape="star" className="hero-star" />
 
         {/* Behind the headline on purpose. */}
         <Portrait3D variant="hero" />
@@ -40,7 +40,11 @@ function Main() {
 
       <div className="hero-corners">
         <span className="hero-year">&copy;2026</span>
-        <span className="hero-since">/BUILDING SINCE 2022</span>
+
+        {/* Answers the star across the frame, in place of the caption that
+            used to sit here. */}
+        <Mark shape="bolt" className="hero-bolt" />
+
       </div>
 
     </header>

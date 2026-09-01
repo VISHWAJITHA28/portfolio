@@ -1,0 +1,50 @@
+/* ── the marks ────────────────────────────────────────────────────────────
+   Star and bolt, drawn as solid objects with an iridescent bevel. See
+   Mark.tsx for why it is three stacked copies of one path.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.mark {
+    display: block;
+    height: auto;
+    overflow: visible;
+    /* A real cast shadow, not a filter on the face: it has to fall from the
+       whole silhouette including the bevel, or the mark looks pasted on. */
+    filter: drop-shadow(0 6px 10px rgba(17, 17, 17, 0.22));
+}
+
+/* The cut side. Offset down-left, and fattened by a stroke in its own fill so
+   it peeks out all the way round rather than only on two sides. Round joins
+   are what turn the sharp tips into moulded ones. */
+.mark-edge {
+    transform: translate(-3.2px, 3.6px);
+    stroke-width: 5;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+/* The top surface. Same round joins, or the black face would keep the sharp
+   corners the bevel has already lost. */
+.mark-face {
+    fill: #0b0b0d;
+    stroke: #0b0b0d;
+    stroke-width: 4.2;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+}
+
+/* A hairline where the light hits. Drawn as a stroke on the same path with a
+   dash pattern, so it only appears along part of the outline instead of
+   ringing the whole shape — which would read as a border. */
+.mark-glint {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.75);
+    stroke-width: 1.4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    stroke-dasharray: 46 300;
+    stroke-dashoffset: 4;
+}
+
+/* Slightly deeper bevel on the bolt: its faces are flat and angular, so it
+   needs more of the side showing to read as thick. */
+.mark--bolt .mark-edge { transform: translate(-3.8px, 4.2px); }

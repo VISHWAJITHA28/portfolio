@@ -63,36 +63,10 @@
     color: var(--bg) !important;
 }
 
-/* ── projects ── */
-#projects {
-    padding-block: var(--section-y);
-    max-width: var(--page);
-    margin: 0 auto;
-    padding-inline: var(--gutter);
-}
-#projects h1 {
-    font-family: var(--display);
-    font-weight: 800;
-    text-transform: uppercase;
-    font-size: clamp(1.9rem, 4.6vw, 4rem);
-    line-height: 0.98;
-    letter-spacing: -0.03em;
-    margin-bottom: 44px;
-}
-.projects-grid { grid-gap: clamp(30px, 4vw, 58px) !important; }
-.project img { border-radius: 12px; border: 1px solid var(--line); }
-.project h2 {
-    font-family: var(--display);
-    font-weight: 700;
-    text-transform: none;
-    font-size: 1.35rem;
-    letter-spacing: -0.02em;
-    color: var(--ink);
-    margin-top: 18px;
-}
-.project p { color: var(--muted); font-size: 0.97rem; line-height: 1.6; }
-.project .zoom { transition: transform 600ms cubic-bezier(.2,.8,.2,1); }
-.project:hover .zoom { transform: scale(1.02); }
+/* Projects owns its own sheet (Project.scss). The block that used to live
+   here styled the old grid, and its #projects selectors outranked it on
+   specificity — which is why the heading was still coming out uppercase at
+   weight 800 instead of the weight it asks for. */
 
 /* ── timeline ── */
 #history { padding-block: var(--section-y); }

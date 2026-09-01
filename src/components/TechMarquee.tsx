@@ -2,7 +2,7 @@ import React from "react";
 import '../assets/styles/TechMarquee.scss';
 
 /**
- * Three rows of technologies, scrolling in alternating directions.
+ * Two rows of technologies, scrolling in opposite directions.
  *
  * WHY ALTERNATING
  *     Rows moving the same way read as one block sliding. Reversing every
@@ -21,30 +21,38 @@ import '../assets/styles/TechMarquee.scss';
  * SPEED
  *     Rows run at different durations. Identical speeds would let the rows
  *     stay in step with each other and the counter-motion would stop reading.
+ *
+ * ROW LENGTH IS A DESIGN CONSTRAINT, NOT A LIST
+ *     A row of four pills is narrower than the viewport, so its repeat lands
+ *     on screen beside the original and the section reads as the same four
+ *     words printed twice. Eight per row makes one copy wide enough that the
+ *     seam stays off screen behind the mask. Anything added here has to keep
+ *     the rows at least that long.
  */
 
 type Row = { items: string[]; reverse: boolean; seconds: number };
 
 const ROWS: Row[] = [
   {
-    // The core: language, framework, database, deployment.
-    items: ["Python", "FastAPI", "PostgreSQL", "Docker", "Azure"],
+    // Build and ship.
+    items: [
+      "Python", "FastAPI", "PostgreSQL", "Docker",
+      "Azure", "Next.js", "React", "TypeScript",
+    ],
     reverse: false,
+    seconds: 40,
+  },
+  {
+    // The AI layer.
+    items: [
+      "LangGraph", "LangChain", "RAG", "Gemini",
+      "FAISS", "ChromaDB", "FHIR R4", "pandas",
+    ],
+    reverse: true,
     seconds: 34,
   },
-  {
-    // The models.
-    items: ["PyTorch", "TensorFlow", "scikit-learn", "OpenCV"],
-    reverse: true,
-    seconds: 28,
-  },
-  {
-    // The agentic layer.
-    items: ["LangGraph", "LangChain", "RAG", "Gemini"],
-    reverse: false,
-    seconds: 31,
-  },
 ];
+
 
 function Track({ items, reverse, seconds }: Row) {
   return (
