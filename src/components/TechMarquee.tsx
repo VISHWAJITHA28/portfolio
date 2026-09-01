@@ -18,36 +18,45 @@ import '../assets/styles/TechMarquee.scss';
  *     The duplicate is aria-hidden, so a screen reader hears each technology
  *     once.
  *
- * SPEED
- *     Rows run at different durations. Identical speeds would let the rows
- *     stay in step with each other and the counter-motion would stop reading.
- *
- * THE REPEAT, AND WHY THE PILLS ARE BIG
+ * THE REPEAT
  *     An infinite scroll cannot exist without a duplicate. The only question
  *     is whether the duplicate is on screen at the same moment as the
  *     original, and that is a race between the width of ONE copy and the
- *     visible width of the row. With a short list the pills therefore have to
- *     be large: nine technologies at this size make a copy about as wide as
- *     the mask window, which is what keeps the seam out of sight.
+ *     visible width of the row.
  *
- *     If this list gets shorter again, make the pills bigger or drop the
- *     marquee. Adding rows does not help - it is width that matters.
+ *     WIDTH, not item count, is what settles it. These thirteen include some
+ *     long labels, so both rows now run well past the mask window and the
+ *     seam stays off screen on any normal display. If the list is ever cut
+ *     back to short words again, the levers are pill size and the mask fades
+ *     - adding rows does nothing.
+ *
+ * SPEED IS TIED TO LENGTH
+ *     A longer track covering the same distance in the same time moves
+ *     faster, so the second row is given proportionally longer to travel.
+ *     Equal durations would have it visibly outrunning the first.
  */
 
 type Row = { items: string[]; reverse: boolean; seconds: number };
 
 const ROWS: Row[] = [
+  // Split by width as much as by subject: a row has to be wide enough to hide
+  // its own duplicate, so the long labels are spread across both rows rather
+  // than piled into the AI one.
   {
-    // Build and ship.
-    items: ["Python", "FastAPI", "PostgreSQL", "Docker", "Azure"],
+    items: [
+      "Python", "FastAPI", "PostgreSQL",
+      "Docker", "Azure", "LLM Integration",
+    ],
     reverse: false,
-    seconds: 38,
+    seconds: 44,
   },
   {
-    // The AI layer.
-    items: ["LangGraph", "LangChain", "Gemini", "RAG"],
+    items: [
+      "Gen AI", "Agentic Workflows", "LangGraph", "LangChain",
+      "Prompt Engineering", "RAG", "Gemini",
+    ],
     reverse: true,
-    seconds: 32,
+    seconds: 52,
   },
 ];
 
