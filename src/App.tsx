@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {
   Main,
   Motion,
-  PortraitTravel,
   Statement,
   About,
   Timeline,
@@ -44,7 +43,6 @@ function App() {
         </FadeIn>
         <Footer />
         <Motion/>
-        <PortraitTravel/>
     </div>
     );
 }

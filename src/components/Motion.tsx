@@ -107,7 +107,7 @@ function Motion() {
         // Lines arrive in reading order, which is what makes a two-line
         // headline read as a sentence rather than as a logo appearing.
         .fromTo(".hero-line", { y: 20, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.09 }, 0.06)
-        .fromTo(".hero-portrait", { y: 20, opacity: 0 }, { y: 0, opacity: 1 }, 0.22)
+        .fromTo(".hero-bg", { opacity: 0 }, { opacity: 1 }, 0)
         .fromTo(".hero-corners", { y: 10, opacity: 0 }, { y: 0, opacity: 1 }, 0.3);
     });
 

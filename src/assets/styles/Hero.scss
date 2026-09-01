@@ -1,7 +1,7 @@
 /* ── hero ─────────────────────────────────────────────────────────────────
-   Two lines of near-full-bleed uppercase, with the portrait layered behind so
-   the second line crosses it. The corners carry the small type; the middle of
-   the frame belongs to the overlap.
+   Two lines of near-full-bleed uppercase over a monochrome portrait that
+   fills the frame. The corners carry the small type; the middle of the frame
+   belongs to the overlap of the two.
    ───────────────────────────────────────────────────────────────────────── */
 
 .hero {
@@ -14,6 +14,50 @@
     padding: clamp(84px, 12vh, 130px) var(--gutter) clamp(28px, 5vh, 56px);
 }
 
+/* ── the portrait, as the ground ──────────────────────────────────────
+   Full bleed, edge to edge, no mask and no fade. The photograph IS the first
+   screen and the type sits on top of it.
+
+   Which inverts the value problem. Over cream the headline was near-black; on
+   a photograph covering the whole frame it has to be cream, and the photo has
+   to be pulled DOWN in value to carry it. So: grayscale, darkened, plus a
+   scrim that is strongest exactly where the small type lives - the pill at
+   the top and the marks along the bottom - and weakest across the middle,
+   where the headline is large enough to hold its own.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    /* Never swallows a click meant for the pill nav above it. */
+    pointer-events: none;
+    background: #0f0f11;
+}
+
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Face high in the frame, which is where the headline is not. */
+    object-position: center 24%;
+    display: block;
+    filter: grayscale(1) contrast(1.1) brightness(0.74);
+}
+
+.hero-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+        rgba(10, 10, 12, 0.58) 0%,
+        rgba(10, 10, 12, 0.2) 22%,
+        rgba(10, 10, 12, 0.12) 52%,
+        rgba(10, 10, 12, 0.42) 82%,
+        rgba(10, 10, 12, 0.68) 100%);
+}
+
 /* ── stage ── */
 
 .hero-stage {
@@ -21,10 +65,6 @@
     width: 100%;
     max-width: 1500px;
     margin: 0 auto;
-    /* The portrait turns on its Y axis here. Without perspective on the
-       ancestor, rotateY is an orthographic squash — no near edge, no far
-       edge, and the turn reads as the image being crushed sideways. */
-    perspective: 1400px;
 }
 
 /* ── the headline ─────────────────────────────────────────────────────
@@ -38,7 +78,7 @@
 
 .hero-title {
     position: relative;
-    z-index: 2;                 /* above the portrait */
+    z-index: 2;                 /* above the background portrait */
     margin: 0;
     text-align: center;
     font-weight: 800;
@@ -47,7 +87,10 @@
     font-size: clamp(3.6rem, 15.5vw, 15rem);
     line-height: 0.82;
     letter-spacing: -0.05em;
-    color: var(--ink);
+    color: var(--bg);
+    /* Not for style - the photo underneath is not uniform, and without this
+       the type loses its edge wherever a light area passes behind it. */
+    text-shadow: 0 2px 30px rgba(10, 10, 12, 0.45);
     /* Off, so the type never swallows a click meant for what is behind it. */
     pointer-events: none;
 }
@@ -71,7 +114,7 @@
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 0.9;
-    color: var(--ink);
+    color: var(--bg);
 }
 
 /* ── the bolt ─────────────────────────────────────────────────────────
@@ -79,6 +122,15 @@
    filler; a second drawn mark makes the two bottom corners answer each other,
    which is what the frame wanted in the first place.
    ───────────────────────────────────────────────────────────────────────── */
+
+.hero-star,
+.hero-bolt {
+    /* A black mark on a dark photograph needs its outline picked out, or the
+       shape is only readable by its iridescent bevel. The outer glow reads as
+       light catching the edge rather than as a border. */
+    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.3))
+            drop-shadow(0 8px 16px rgba(10, 10, 12, 0.6));
+}
 
 .hero-bolt {
     width: clamp(30px, 3.6vw, 52px);
@@ -122,7 +174,8 @@
 
 @media screen and (max-width: 700px) {
     .hero { min-height: 92vh; }
+    /* Cropped harder on a narrow frame, so the face has to sit higher still. */
+    .hero-bg img { object-position: center 20%; }
     .hero-title { line-height: 0.86; }
-    .hero-portrait { width: clamp(118px, 32vw, 160px); top: 44%; }
     .hero-bolt { width: 30px; }
 }

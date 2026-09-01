@@ -115,20 +115,9 @@
 
 /* ── placement ── */
 
-.p3d--hero {
-    position: absolute;
-    z-index: 1;
-    left: 50%;
-    top: 56%;
-    transform: translateX(-50%);
-    width: clamp(150px, 15vw, 215px);
-    aspect-ratio: 3 / 4;
-}
-
-/* Behind the type, and graded down so the headline keeps its edge. */
-.p3d--hero .p3d-face img {
-    filter: grayscale(1) contrast(1.12) brightness(0.82);
-}
+/* The hero variant is gone: the portrait there is the page background now,
+   not a card. Only the About card is left, and it no longer turns, so --turn
+   and --lit simply stay at their defaults. */
 
 .p3d--about {
     position: relative;
