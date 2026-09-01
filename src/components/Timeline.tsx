@@ -24,13 +24,19 @@ import '../assets/styles/Timeline.scss';
  *        ticks under them is a career. It runs oldest to newest left to
  *        right, so the most recent role lands under the "Now" end.
  *
- * THEY ALL CLOSE
+ * THEY ALL CLOSE, AND THE PANEL COSTS NO SPACE
  *     Nothing is open until you point at one, and moving the pointer off the
- *     row shuts them again. That costs something: the panel stage has to keep
- *     its height whether or not anything is in it, or every open and close
- *     would shove the rest of the page up and down. So the space stays
- *     reserved and carries a faint prompt while it is empty, which is better
- *     than a 250px hole in the section.
+ *     row shuts them again.
+ *
+ *     The obvious way to do that leaves a hole: reserve the panel's height so
+ *     the page does not jump, and you are left with a gap under the cases
+ *     whenever they are closed. Collapsing the gap instead makes every open
+ *     and close drag the rest of the page up and down under the cursor.
+ *
+ *     So the panel takes NO space at all. Its stage is zero-height and the
+ *     panel overlays what follows, like any popover. No gap closed, no shift
+ *     open. The panel is opaque for exactly that reason - it has the section
+ *     below showing through it otherwise.
  *
  * IT IS A TABLIST, NOT A ROW OF BUTTONS
  *     Exactly one of a set is selected and each controls its own panel, which
@@ -174,12 +180,11 @@ function Timeline() {
         {/* Fixed-height stage. Each panel gets its own grid cell in a single
             row so they stack, and only the open one is painted — swapping
             between them never moves anything else on the page. */}
-        <div className={`hist-panels${open === null ? " is-empty" : ""}`}>
-          {/* Holds the reserved space open while nothing is selected. */}
-          <p className="hist-empty" aria-hidden="true">
-            Hover a case to open it
-          </p>
-
+        {/* Zero-height stage: the panels are laid out in its grid columns so
+            each lines up under its own case, but the stage itself takes no
+            space, so they overlay what follows instead of reserving a gap for
+            it. No gap when closed, no page shift when opening. */}
+        <div className="hist-panels">
           {ROLES.map((r, i) => (
             <div
               key={r.id}

@@ -15,7 +15,12 @@
     --case-h: 116px;
     --rail-y: 146px;
 
-    padding-block: var(--section-y);
+    /* No bottom padding. Education below already contributes a full
+       --section-y of its own, and stacking two of them put up to 400px of
+       nothing between the cases and the next heading. The one remaining gap
+       is also where the open panel lands, so it overlays whitespace rather
+       than live content. */
+    padding-block: var(--section-y) 0;
 }
 
 .hist h1 {
@@ -271,7 +276,13 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     margin-top: 8px;
-    min-height: 250px;
+    /* Takes no space. The grid still lays the panels out in their columns, so
+       each sits under its own case, but the box itself is zero-height and the
+       panels overflow it - which is what removes the gap under the closed
+       cases without making the page jump when one opens. */
+    height: 0;
+    /* Paints above the section that follows, since it now overlaps it. */
+    z-index: 5;
 }
 
 .case-panel {
@@ -280,10 +291,15 @@
     padding: 26px 28px 28px;
     border-radius: 20px;
     border: 1px solid rgba(17, 17, 17, 0.1);
-    background: rgba(255, 255, 255, 0.6);
+    /* Nearly opaque, not the 0.6 the glass panels elsewhere use: this one
+       overlays the next section, and at 0.6 that section's text reads
+       straight through it. */
+    background: rgba(252, 250, 246, 0.97);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    box-shadow: 0 22px 44px -32px rgba(17, 17, 17, 0.45);
+    /* Deeper than a card's, because it has to sit clearly in front of live
+       content rather than on the page ground. */
+    box-shadow: 0 26px 60px -26px rgba(17, 17, 17, 0.4);
 
     /* Unfolds downward out of the case above it, which is why the origin is
        the top edge and not the centre. */
@@ -311,24 +327,6 @@
 .case-panel:nth-of-type(2) { grid-column: 2; justify-self: center; }
 .case-panel:nth-of-type(3) { grid-column: 3; justify-self: end; }
 
-/* The stage keeps its height whether or not a case is open, so that closing
-   one does not drag the rest of the page up. This sits in the reserved space
-   while it is empty — quiet enough to ignore, present enough that the gap
-   reads as deliberate. */
-.hist-empty {
-    grid-row: 1;
-    grid-column: 1 / -1;
-    justify-self: center;
-    align-self: center;
-    margin: 0;
-    font-size: 0.85rem;
-    letter-spacing: 0.01em;
-    color: var(--faint);
-    opacity: 0;
-    transition: opacity 300ms cubic-bezier(0.44, 0, 0.56, 1);
-    pointer-events: none;
-}
-.hist-panels.is-empty .hist-empty { opacity: 1; transition-delay: 140ms; }
 
 .case-panel-when {
     margin: 0 0 10px;
@@ -399,17 +397,17 @@
     .case-co { font-size: 0.8rem; gap: 5px; }
     .case-when { font-size: 0.68rem; }
 
+    /* Back into normal flow on a phone: there is no hover, the panel is
+       opened by tapping, and an overlay would cover the case that opened it. */
     .hist-panels {
         display: block;
-        min-height: 0;
+        height: auto;
         margin-top: 22px;
     }
     /* display:none rather than visibility, or the closed panels would still
        hold their space now that they are in normal flow. */
     .case-panel { display: none; width: 100%; }
     .case-panel.is-open { display: block; }
-    /* Nothing to hover on a phone, and no reserved space to explain. */
-    .hist-empty { display: none; }
 }
 
 @media (max-width: 520px) {
