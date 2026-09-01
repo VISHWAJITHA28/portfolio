@@ -44,17 +44,22 @@ type Work = {
   kind: string;
   body: string;
   stack: string[];
-  href: string;
+  /** Absent where the work is not public. The card then shows a note instead
+      of an Open link, rather than a link that goes nowhere. */
+  href?: string;
+  note?: string;
 };
 
 const PROJECTS: Work[] = [
   {
     img: mock07,
     name: "Ve Lyra",
-    kind: "Healthcare platform",
-    body: "A multi-tenant hospital operating system in production. Four role-based portals over one shared FHIR R4 record, with schema-per-tenant isolation and per-module JWT auth.",
+    kind: "B2B SaaS platform",
+    // Deliberately high level. This is another organisation's product, so the
+    // card says what was built and at what scale, not how it is put together.
+    body: "A multi-tenant hospital operating system, sold to hospitals as a B2B SaaS product and running in production. Role-based portals over one shared clinical record, with every tenant's data isolated from every other.",
     stack: ["FastAPI", "PostgreSQL", "Azure", "Next.js"],
-    href: "https://www.ve-lyra.com/",
+    note: "Client product — not publicly linked",
   },
   {
     img: mock01,
@@ -260,17 +265,21 @@ function Project() {
                     {p.stack.map((s) => <li key={s}>{s}</li>)}
                   </ul>
 
-                  <a
-                    className="pdeck-open"
-                    href={p.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    // Buried cards must leave the tab order, or keyboard users
-                    // land on links they cannot see.
-                    tabIndex={isTop ? 0 : -1}
-                  >
-                    Open <span aria-hidden="true">&#8599;</span>
-                  </a>
+                  {p.href ? (
+                    <a
+                      className="pdeck-open"
+                      href={p.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      // Buried cards must leave the tab order, or keyboard
+                      // users land on links they cannot see.
+                      tabIndex={isTop ? 0 : -1}
+                    >
+                      Open <span aria-hidden="true">&#8599;</span>
+                    </a>
+                  ) : (
+                    <span className="pdeck-private">{p.note}</span>
+                  )}
                 </div>
               </article>
             );
