@@ -6,7 +6,7 @@
     position: relative;
     background: #111111;
     color: var(--bg);
-    padding: clamp(90px, 13vh, 170px) 0 0;
+    padding: clamp(70px, 10vh, 130px) 0 0;
     /* The footer is a closing panel, not a strip. Giving it real height is
        what lets the statement, the columns and the watermark each have room
        instead of being stacked tight. */
@@ -22,6 +22,36 @@
     margin-top: clamp(40px, 8vh, 100px);
 }
 
+/* ── the ash surface ──────────────────────────────────────────────────
+   The page's cream grain is a MULTIPLY layer, which does nothing over
+   near-black, so the footer opts out of it (Minimal.scss) and grows its own.
+   Two layers, both normal-blend at low opacity: grey noise over #111 can only
+   lift it, and lifting is exactly what reads as grit rather than as a wash.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.foot::before,
+.foot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Fine grit — the tooth of the surface. */
+.foot::before {
+    opacity: 0.075;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='320' height='320'%3E%3Cfilter id='fg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='320' height='320' filter='url(%23fg)'/%3E%3C/svg%3E");
+}
+
+/* Coarse mottle — cloudy patches at a much larger scale. Without this the
+   grit alone tiles into an even, obviously synthetic fuzz. */
+.foot::after {
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='700'%3E%3Cfilter id='fm'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.014' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='700' height='700' filter='url(%23fm)'/%3E%3C/svg%3E");
+    background-size: 700px 700px;
+}
+
 /* ── the three columns ── */
 
 .foot-grid {
@@ -30,10 +60,9 @@
     display: grid;
     gap: clamp(38px, 5vw, 70px);
     grid-template-columns: 1fr;
-    padding-top: clamp(46px, 7vh, 90px);
     /* Deep enough that the watermark's full cap height fits below the
        columns without the two touching. */
-    padding-bottom: clamp(200px, 30vh, 400px);
+    padding-bottom: clamp(240px, 34vh, 440px);
 }
 
 @media (min-width: 900px) {
@@ -112,7 +141,12 @@
     /* Sits on the bottom edge. The footer is tall enough now that the full
        cap height clears the columns above it. */
     bottom: clamp(10px, 2vh, 34px);
-    transform: translateX(-50%);
+    /* scaleY stretches the caps UPWARD from the bottom edge, so the letters
+       get taller without getting wider. Raising font-size instead would push
+       the V and the A off the frame, which is what the 13.4vw below is
+       carefully sized to avoid. */
+    transform: translateX(-50%) scaleY(1.42);
+    transform-origin: 50% 100%;
     z-index: 1;
     white-space: nowrap;
     /* VISHWAJITHA at weight 800 measures about 7.42em wide (11 caps at
@@ -134,5 +168,3 @@
     .foot-grid { padding-bottom: clamp(70px, 12vh, 120px); }
 }
 
-/* The shared pill positions itself absolutely; the footer is its frame. */
-.foot .pill { top: clamp(20px, 3.4vh, 38px); }

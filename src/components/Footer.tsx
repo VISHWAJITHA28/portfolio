@@ -1,5 +1,4 @@
 import React from "react";
-import PillNav from './PillNav';
 import '../assets/styles/Footer.scss'
 
 /**
@@ -7,8 +6,11 @@ import '../assets/styles/Footer.scss'
  *
  * WHY IT INVERTS
  *     Going to near-black here is what makes the page feel like it ENDS. A
- *     cream footer just runs out; a dark one shuts the door. It also mirrors
- *     the hero's pill nav, so the page opens and closes on the same device.
+ *     cream footer just runs out; a dark one shuts the door.
+ *
+ *     No pill nav down here. The hero has one; repeating it in the footer put
+ *     the name on screen twice within a scroll of the contact column that
+ *     already carries it, and read as a duplicate rather than a bookend.
  *
  * THE WATERMARK
  *     The name set enormous along the bottom edge and deliberately clipped.
@@ -28,14 +30,17 @@ const QUICK = [
 function Footer() {
   return (
     <footer className="foot">
-      <PillNav id="foot" tone="dark" />
-
       <div className="mn-wrap foot-grid">
 
+        {/* Deliberately NOT "from prototype to production" — that is the
+            Statement section's line, and repeating it verbatim here made the
+            footer read as a duplicate rather than a close. This one turns the
+            same idea outward: an invitation, sitting right beside the contact
+            column it is meant to send you to. */}
         <h2 className="foot-statement">
-          Taking AI<br />
-          from prototype<br />
-          to production.
+          Let&rsquo;s build AI<br />
+          that grows<br />
+          with you.
         </h2>
 
         <div className="foot-col">
