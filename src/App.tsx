@@ -34,8 +34,8 @@ function App() {
     <div className={`main-container ${mode === 'dark' ? 'dark-mode' : 'light-mode'}`}>
         <FadeIn transitionDuration={700}>
             <Main/>
-            <Statement/>
             <About/>
+            <Statement/>
             <TechMarquee/>
             <Project/>
             <Timeline/>

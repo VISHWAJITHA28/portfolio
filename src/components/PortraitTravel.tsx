@@ -56,7 +56,7 @@ function PortraitTravel() {
         // The grade lifts on the way round, so the colour arrives with the
         // rotation rather than as a separate change.
         .to(hero, {
-          filter: "grayscale(0.15) contrast(1.1) brightness(0.9)",
+          filter: "grayscale(0) contrast(1.12) brightness(1)",
           ease: "none",
         }, 0)
         // Only at the very end, once it is nearly edge-on and a few pixels

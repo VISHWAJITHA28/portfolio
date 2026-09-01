@@ -20,6 +20,15 @@
 
     --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 
+    /* Aliases. Sections.scss was written against an earlier naming and still
+       asks for these; an undefined custom property makes the whole
+       declaration invalid and it is dropped in silence, which is why several
+       colours and the font were quietly falling back. */
+    --display: var(--font);
+    --body: var(--font);
+    --muted: var(--grey);
+    --faint: #b6b6b6;
+
     --page: 1240px;
     --gutter: clamp(20px, 5vw, 60px);
     --section-y: clamp(90px, 13vh, 200px);

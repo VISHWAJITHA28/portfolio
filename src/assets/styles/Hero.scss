@@ -67,7 +67,9 @@
     /* 46% rather than 50%: optically centred against the headline's mass,
        which sits above the true middle because of the descender space under
        the second line. */
-    top: 46%;
+    /* Lower than centre, so the headline's second line crosses the upper
+       third of the photo rather than cutting through the face. */
+    top: 56%;
     transform: translateX(-50%);
     width: clamp(150px, 15vw, 215px);
     aspect-ratio: 3 / 4;
@@ -85,10 +87,11 @@
     height: 100%;
     object-fit: cover;
     object-position: center 28%;
-    /* Graded down hard. A bright photograph behind black type destroys the
-       type's edge; darkening it keeps the headline the strongest thing in the
-       frame. */
-    filter: grayscale(1) contrast(1.25) brightness(0.42);
+    /* Was brightness(0.42), which crushed the photo into a near-black
+       rectangle — the face disappeared entirely. 0.82 keeps it clearly
+       readable while still sitting behind the type rather than competing
+       with it. */
+    filter: grayscale(1) contrast(1.12) brightness(0.82);
 }
 
 /* ── corners ── */
