@@ -5,6 +5,7 @@ import {
   Timeline,
   Education,
   Expertise,
+  TechMarquee,
   Project,
   Contact,
   Navigation,
@@ -37,6 +38,7 @@ function App() {
             <Main/>
             <About/>
             <Expertise/>
+            <TechMarquee/>
             <Timeline/>
             <Education/>
             <Project/>

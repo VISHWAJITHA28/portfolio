@@ -1,0 +1,159 @@
+/* ── the stack, on rails ──────────────────────────────────────────────────
+   Three rows of pills scrolling in alternating directions.
+
+   Everything that moves is a `transform`, never `left` or `margin-left`, so
+   the whole section runs on the compositor and never triggers layout. That is
+   the difference between this being smooth and it stuttering the page scroll.
+   ───────────────────────────────────────────────────────────────────────── */
+
+.marquee-section {
+    padding: 6% 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.marquee-head {
+    padding: 0 10%;
+    margin-bottom: 46px;
+}
+
+.marquee-eyebrow {
+    margin: 0 0 10px;
+    font-size: 0.78rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.55;
+}
+
+.marquee-head h2 {
+    margin: 0;
+    line-height: 1.05;
+}
+
+.marquee-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    /* The rows are tilted very slightly as a group. Perfectly horizontal reads
+       as a cookie-cutter logo banner; two degrees is enough to look composed
+       without making the text feel crooked. */
+    transform: rotate(-1.6deg);
+    /* Wider than the viewport so the rotation never exposes a bare corner. */
+    width: 108%;
+    margin-left: -4%;
+}
+
+.marquee-row {
+    display: flex;
+    overflow: hidden;
+
+    /* Fade both ends so pills dissolve rather than being sliced off by the
+       viewport edge. Without this the loop is obvious at the boundaries. */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+}
+
+.marquee-track {
+    display: flex;
+    flex-shrink: 0;
+    gap: 14px;
+    padding-right: 14px;
+    will-change: transform;
+    animation-name: marquee-scroll;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+/* -50% exactly, because the track holds the items twice. Any other value and
+   the seam becomes visible as a jump. */
+@keyframes marquee-scroll {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+}
+
+.marquee-track--reverse {
+    animation-direction: reverse;
+}
+
+.marquee-pill {
+    flex-shrink: 0;
+    padding: 15px 28px;
+    border-radius: 999px;
+    white-space: nowrap;
+    font-size: 1.02rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.035);
+    color: rgba(255, 255, 255, 0.88);
+    transition: border-color 320ms ease, background-color 320ms ease, color 320ms ease;
+}
+
+/* Hovering a single pill lights it. The row keeps moving, so this reads as
+   picking something out of a stream rather than stopping the stream. */
+.marquee-pill:hover {
+    border-color: rgba(167, 139, 250, 0.85);
+    background: rgba(167, 139, 250, 0.14);
+    color: #fff;
+}
+
+/* Slowing on hover rather than halting: a hard stop feels broken, a glide
+   feels deliberate. */
+.marquee-rows:hover .marquee-track {
+    animation-duration: 150s !important;
+}
+
+/* ── light theme ─────────────────────────────────────────────────────── */
+
+.light-mode {
+    .marquee-pill {
+        border-color: rgba(0, 0, 0, 0.12);
+        background: rgba(0, 0, 0, 0.025);
+        color: rgba(13, 17, 22, 0.86);
+    }
+
+    .marquee-pill:hover {
+        border-color: rgba(80, 0, 202, 0.7);
+        background: rgba(80, 0, 202, 0.08);
+        color: #0d1116;
+    }
+}
+
+/* ── smaller screens ─────────────────────────────────────────────────── */
+
+@media screen and (max-width: 900px) {
+    .marquee-head { padding: 0 8%; }
+
+    .marquee-pill {
+        padding: 12px 20px;
+        font-size: 0.9rem;
+    }
+
+    .marquee-rows { gap: 12px; }
+}
+
+/* Motion is the whole point of this section, so with it suppressed the rows
+   are laid out as a static wrapped list instead of an empty band. */
+@media (prefers-reduced-motion: reduce) {
+    .marquee-track {
+        animation: none;
+        flex-wrap: wrap;
+    }
+
+    .marquee-row {
+        -webkit-mask-image: none;
+        mask-image: none;
+        overflow: visible;
+    }
+
+    .marquee-rows {
+        transform: none;
+        width: 100%;
+        margin-left: 0;
+        padding: 0 10%;
+    }
+
+    /* The duplicate half exists only to make the loop seamless. */
+    .marquee-track [aria-hidden="true"] { display: none; }
+}

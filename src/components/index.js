@@ -4,6 +4,7 @@ export { default as Footer } from "./Footer";
 export { default as Main } from "./Main";
 export { default as About } from "./About";
 export { default as Expertise } from "./Expertise";
+export { default as TechMarquee } from "./TechMarquee";
 export { default as Timeline } from "./Timeline";
 export { default as Education } from "./Education";
 export { default as Project } from "./Project";
