@@ -53,9 +53,31 @@
     background: linear-gradient(to bottom,
         rgba(10, 10, 12, 0.58) 0%,
         rgba(10, 10, 12, 0.2) 22%,
-        rgba(10, 10, 12, 0.12) 52%,
-        rgba(10, 10, 12, 0.42) 82%,
-        rgba(10, 10, 12, 0.68) 100%);
+        rgba(10, 10, 12, 0.12) 58%,
+        rgba(10, 10, 12, 0.06) 100%);
+}
+
+/* Dissolves the bottom of the photograph into the cream. Without this the
+   hero ends on a hard horizontal line where the image stops, which is the one
+   thing that makes a full-bleed first screen look like a banner pasted above
+   the page instead of the top of it.
+
+   It sits ABOVE the photo and below the type, so the small print in the
+   corners lands on clean cream and goes back to ink. */
+.hero::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: clamp(180px, 30vh, 380px);
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+        rgba(250, 247, 243, 0) 0%,
+        rgba(250, 247, 243, 0.55) 46%,
+        rgba(250, 247, 243, 0.92) 76%,
+        var(--bg) 100%);
 }
 
 /* ── stage ── */
@@ -81,12 +103,20 @@
     z-index: 2;                 /* above the background portrait */
     margin: 0;
     text-align: center;
-    font-weight: 800;
+    /* Anton, not the page's Inter. A poster face: one weight, tall caps, and
+       narrow enough that ENGINEER reads as a single mass rather than eight
+       letters. It only has a 400, so the weight goes back to normal - the
+       heft is in the design of the face, not in a weight axis. */
+    font-family: "Anton", "Archivo", Impact, sans-serif;
+    font-weight: 400;
     text-transform: uppercase;
-    /* vw-driven, so both lines stay near the frame edges at any width */
-    font-size: clamp(3.6rem, 15.5vw, 15rem);
-    line-height: 0.82;
-    letter-spacing: -0.05em;
+    /* Much larger than the Inter version needed: Anton's caps advance about
+       0.47em against Inter 800's ~0.72em, so the same line at the same size
+       would sit two thirds of the way across the frame. */
+    font-size: clamp(4rem, 25vw, 23rem);
+    line-height: 0.86;
+    /* Anton is already tightly fitted; Inter's -0.05em would collide it. */
+    letter-spacing: -0.01em;
     color: var(--bg);
     /* Not for style - the photo underneath is not uniform, and without this
        the type loses its edge wherever a light area passes behind it. */
@@ -114,7 +144,7 @@
     font-weight: 500;
     letter-spacing: -0.04em;
     line-height: 0.9;
-    color: var(--bg);
+    color: var(--ink);
 }
 
 /* ── the bolt ─────────────────────────────────────────────────────────
@@ -123,13 +153,11 @@
    which is what the frame wanted in the first place.
    ───────────────────────────────────────────────────────────────────────── */
 
-.hero-star,
-.hero-bolt {
-    /* A black mark on a dark photograph needs its outline picked out, or the
-       shape is only readable by its iridescent bevel. The outer glow reads as
-       light catching the edge rather than as a border. */
-    filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.3))
-            drop-shadow(0 8px 16px rgba(10, 10, 12, 0.6));
+/* The star is still over the photograph, so its silhouette needs picking out
+   from outside. The bolt is down in the faded cream and does not. */
+.hero-star {
+    filter: drop-shadow(0 0 18px rgba(255, 255, 255, 0.34))
+            drop-shadow(0 8px 16px rgba(10, 10, 12, 0.55));
 }
 
 .hero-bolt {

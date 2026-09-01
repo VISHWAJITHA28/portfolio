@@ -1,5 +1,5 @@
 import React from "react";
-import Portrait3D from './Portrait3D';
+import aiCoding from '../assets/images/ai-coding.png';
 import '../assets/styles/About.scss';
 
 /**
@@ -14,6 +14,12 @@ import '../assets/styles/About.scss';
  *
  *     The empty space in the left column is doing work. Filling it would
  *     square the layout up and lose the asymmetry that makes it look designed.
+ *
+ * THE MIDDLE IMAGE
+ *     Was a second portrait on a turning card. Two photographs of the same
+ *     person one screen apart is one too many, and the card's rotation went
+ *     with the hero animation it belonged to. It is a still image of the work
+ *     now — see gen_about.py for why it is drawn and not a stock photo.
  */
 function About() {
   return (
@@ -28,8 +34,11 @@ function About() {
           </p>
         </div>
 
+        {/* Not a second photograph of me. The hero is already a portrait at
+            full bleed, and repeating it here said nothing the first one had
+            not. This says what the section is actually about. */}
         <div className="about-portrait">
-          <Portrait3D variant="about" />
+          <img src={aiCoding} alt="An editor with a model graph laid over it" />
         </div>
 
         <div className="about-right">

@@ -209,5 +209,12 @@ body::after {
 
 /* Content sits above both layers. The footer inverts to near-black, where a
    multiply grain would do nothing, so it opts out and keeps its own surface. */
-.main-container { position: relative; z-index: 1; }
+.main-container {
+    position: relative;
+    z-index: 1;
+    /* Stops a stray horizontal scrollbar at the foot of the page. `clip`, not
+       `hidden`: hidden would make this a scroll container and take vertical
+       scrolling away from the window, which is what Lenis drives. */
+    overflow-x: clip;
+}
 .foot { isolation: isolate; }

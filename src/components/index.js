@@ -1,4 +1,3 @@
-export { default as Portrait3D } from "./Portrait3D";
 export { default as PillNav } from "./PillNav";
 export { default as Statement } from "./Statement";
 export { default as Motion } from "./Motion";
