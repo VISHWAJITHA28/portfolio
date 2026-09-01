@@ -33,7 +33,7 @@
 .marquee-rows {
     display: flex;
     flex-direction: column;
-    gap: 18px;
+    gap: 22px;
 }
 
 .marquee-row {
@@ -42,15 +42,18 @@
 
     /* Fade both ends so pills dissolve rather than being sliced off by the
        viewport edge. Without this the loop is obvious at the boundaries. */
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 9%, #000 91%, transparent);
+    /* 15%, not 9%. The window the eye can actually read is what a duplicate
+       has to stay out of, so with only nine technologies left the fades do
+       the work the row length no longer can. */
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
 }
 
 .marquee-track {
     display: flex;
     flex-shrink: 0;
-    gap: 14px;
-    padding-right: 14px;
+    gap: 18px;
+    padding-right: 18px;
     will-change: transform;
     animation-name: marquee-scroll;
     animation-timing-function: linear;
@@ -68,12 +71,16 @@
     animation-direction: reverse;
 }
 
+/* Deliberately large. One copy of a row has to be about as wide as the
+   readable window or its duplicate shows up beside it, and with nine
+   technologies the only lever left is pill size. Nine at this scale also
+   carry the section better than sixteen small ones did. */
 .marquee-pill {
     flex-shrink: 0;
-    padding: 15px 28px;
+    padding: 22px 48px;
     border-radius: 999px;
     white-space: nowrap;
-    font-size: 1.02rem;
+    font-size: clamp(1.05rem, 1.55vw, 1.55rem);
     font-weight: 600;
     letter-spacing: -0.01em;
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -118,8 +125,8 @@
     .marquee-head { padding: 0 8%; }
 
     .marquee-pill {
-        padding: 12px 20px;
-        font-size: 0.9rem;
+        padding: 14px 24px;
+        font-size: 0.95rem;
     }
 
     .marquee-rows { gap: 12px; }

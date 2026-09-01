@@ -22,12 +22,16 @@ import '../assets/styles/TechMarquee.scss';
  *     Rows run at different durations. Identical speeds would let the rows
  *     stay in step with each other and the counter-motion would stop reading.
  *
- * ROW LENGTH IS A DESIGN CONSTRAINT, NOT A LIST
- *     A row of four pills is narrower than the viewport, so its repeat lands
- *     on screen beside the original and the section reads as the same four
- *     words printed twice. Eight per row makes one copy wide enough that the
- *     seam stays off screen behind the mask. Anything added here has to keep
- *     the rows at least that long.
+ * THE REPEAT, AND WHY THE PILLS ARE BIG
+ *     An infinite scroll cannot exist without a duplicate. The only question
+ *     is whether the duplicate is on screen at the same moment as the
+ *     original, and that is a race between the width of ONE copy and the
+ *     visible width of the row. With a short list the pills therefore have to
+ *     be large: nine technologies at this size make a copy about as wide as
+ *     the mask window, which is what keeps the seam out of sight.
+ *
+ *     If this list gets shorter again, make the pills bigger or drop the
+ *     marquee. Adding rows does not help - it is width that matters.
  */
 
 type Row = { items: string[]; reverse: boolean; seconds: number };
@@ -35,24 +39,17 @@ type Row = { items: string[]; reverse: boolean; seconds: number };
 const ROWS: Row[] = [
   {
     // Build and ship.
-    items: [
-      "Python", "FastAPI", "PostgreSQL", "Docker",
-      "Azure", "Next.js", "React", "TypeScript",
-    ],
+    items: ["Python", "FastAPI", "PostgreSQL", "Docker", "Azure"],
     reverse: false,
-    seconds: 40,
+    seconds: 38,
   },
   {
     // The AI layer.
-    items: [
-      "LangGraph", "LangChain", "RAG", "Gemini",
-      "FAISS", "ChromaDB", "FHIR R4", "pandas",
-    ],
+    items: ["LangGraph", "LangChain", "Gemini", "RAG"],
     reverse: true,
-    seconds: 34,
+    seconds: 32,
   },
 ];
-
 
 function Track({ items, reverse, seconds }: Row) {
   return (
